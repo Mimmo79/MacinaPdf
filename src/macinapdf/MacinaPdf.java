@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.*;
+
+
 
 /**
  *
@@ -19,7 +20,7 @@ import org.apache.*;
  */
 public class MacinaPdf {
 
-    public static String nomeFile="TICRMB_2017_C40_4220517800019165";
+    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
 
     
     public static void main(String[] args) throws Exception {   
@@ -33,7 +34,7 @@ public class MacinaPdf {
        //ripulisco il file e lo savo con nome diverso
        Scansionatore.scansiona();
        
-       
+
        
     }
     
