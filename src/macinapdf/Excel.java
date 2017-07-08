@@ -34,7 +34,7 @@ public class Excel {
                 Workbook wb = new HSSFWorkbook();
                 Sheet sheet1 = wb.createSheet("Foglio 1");
                 
-                for (rownum = (short) 0; rownum < (Scansionatore.n_row); rownum++) {
+                for (rownum = (short) 0; rownum < (Scansionatore.n_row) ; rownum++) { 
 
                     Row r = sheet1.createRow(rownum);               // creo una riga
                     
@@ -49,9 +49,15 @@ public class Excel {
                             f.setBold(true);                        // grassetto
                             cs.setFont(f);                          // assegno al CellStyle il font
                             sheet1.autoSizeColumn(rownum, true);
-                            c.setCellStyle(cs);                     // assegno alla cella lo stile                            
-                        }
-                        c.setCellValue(data[rownum][cellnum]);      // inserisco i valori
+                            c.setCellStyle(cs);                     // assegno alla cella lo stile
+                            c.setCellValue(data[rownum][cellnum]);  // inserisco i valori
+                        } else {
+                            if (cellnum==0){
+                            c.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
+                            } else {
+                                c.setCellValue(Double.parseDouble(data[rownum][cellnum]));  // salvo il campo come double  
+                            }        
+                        } 
                     }
                 }
                 

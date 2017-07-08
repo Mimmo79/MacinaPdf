@@ -26,14 +26,11 @@ public class Scansionatore {
     public static String id5="TOTALE -";
     public static String id6="TOTALE +";
     public static String id7="F.C.IVA";
-    
     public static int n_row=1;
     public static int n_FCIVA=0;
-    
     public static String[][] data = new String[500][10];
 
-    
-    
+   
     
     public static String[][] scansiona() {
 
@@ -66,7 +63,13 @@ public class Scansionatore {
                     String Num = riga.next();
                     //System.out.println(Num);
                     data[n_row][0]=Num;
-
+                    
+                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
+                    int i;
+                    for (i=1; i<10; i++){
+                        data[n_row][i]="0";
+                    }
+                    
                     n_row++;
                     n_FCIVA=5; // punatore per i fuori campo iva
 
@@ -77,7 +80,7 @@ public class Scansionatore {
                     riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Con = riga.next();
                     //System.out.println(Tot_Con);
-                    data[n_row-1][1]=Tot_Con;
+                    data[n_row-1][1]=Tot_Con.replace(".","").replace(",",".");  //il primo elimina i punti, il secondo converte le virgole in punti
 
                     
                 } else if (line.contains(id3)){
@@ -87,7 +90,7 @@ public class Scansionatore {
                     riga.next(); riga.next();
                     String Tot_Traff = riga.next();
                     //System.out.println(Tot_Traff);
-                    data[n_row-1][2]=Tot_Traff;
+                    data[n_row-1][2]=Tot_Traff.replace(".","").replace(",",".");
  
                 } else if (line.contains(id4)){
                     outputStream.println("id4 "+line);
@@ -96,7 +99,7 @@ public class Scansionatore {
                     riga.next(); riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Altri = riga.next();
                     //System.out.println(Tot_Altri);
-                    data[n_row-1][3]=Tot_Altri;
+                    data[n_row-1][3]=Tot_Altri.replace(".","").replace(",",".");
                     
                 } else if (line.contains(id5)||line.contains(id6)){
                     outputStream.println("id5/id6 "+line);
@@ -105,7 +108,7 @@ public class Scansionatore {
                     riga.next();
                     String Tot = riga.next();
                     //System.out.println(Tot);
-                    data[n_row-1][4]=Tot;
+                    data[n_row-1][4]=Tot.replace(".","").replace(",",".");
                     
                 } else if (line.contains(id7)){
                     outputStream.println("id7 "+line);
@@ -118,9 +121,8 @@ public class Scansionatore {
                     a=b;
                     b = riga.next();                    
                     }
-                    String FCIVA = a;
-                    //System.out.println(FCIVA);
-                    data[n_row-1][n_FCIVA]=FCIVA;
+                    //System.out.println(a);
+                    data[n_row-1][n_FCIVA]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 5 in su
                     n_FCIVA++;
                 }                  
             
@@ -150,6 +152,9 @@ public class Scansionatore {
     data[0][8]=id7;
     data[0][9]=id7;
     
+    
+
+    
     return data;
 
 //            STAMPA DEL ARRAY data
@@ -161,6 +166,9 @@ public class Scansionatore {
 //            System.out.println("\n");    
 //            }
     
+    
+
+
     }
 }
   
