@@ -1,24 +1,14 @@
 package macinapdf;
 
-
-
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-
 import java.io.*;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-
 
 /**
  *
@@ -37,51 +27,34 @@ public class Scansionatore {
     public static String id6="TOTALE +";
     public static String id7="F.C.IVA";
     
-    public static int n_row=0;
-       
-    public static void scansiona(){
-        
+    public static int n_row=1;
+    public static int n_FCIVA=0;
+    
+    public static String[][] data = new String[500][10];
 
+    
+    
+    
+    public static String[][] scansiona() {
 
         try {   
-            // apro il file in lettura
+            // apro il file .txt in lettura
             BufferedReader inputStream = new BufferedReader( new FileReader(MacinaPdf.nomeFile+".txt"));
             Scanner in = new Scanner(inputStream);
-            // apro il file in cui riverso i dati elaborati
+            // apro il file -elab1.txt in cui riverso i dati elaborati
             PrintWriter outputStream = new PrintWriter(new FileWriter(MacinaPdf.nomeFile+"-elab1.txt"));
 
-
-            Workbook wb = new HSSFWorkbook();
-            Sheet sheet1 = wb.createSheet("new sheet");
-            //Otteniamo una istanza di CreationHelper del nostro Workbook
-            CreationHelper createHelper = wb.getCreationHelper();
-
-
-            // Possiamo creare una cella e inserirci un valore in una sola riga di codice
-            //row.createCell(2).setCellValue(
-            //createHelper.createRichTextString("This is a string"));
-            //row.createCell(3).setCellValue(true);
-            //row.createCell(4).setCellValue("3,25");
-
-
-
-            
-        
-            // se c'è una nuova linea eseguo il codice
+            //salto la prima parte del documento
             while (in.hasNextLine()) {
-                
-                // Creiamo la riga numero : "n_row"
-                Row row = sheet1.createRow(n_row);
-  
-                
-                /*
-                Analizzo linea per linea,
-                se una linea contiene il codice che cerco (es. "60\t3")eseguo il blocco
-                "id1" codice identificativo del tipo di file:
-                ricaricabile, ricaricabile personali, abbonamento
-                */
                 line = in.nextLine();
-                
+                if (line.contains(id1))
+                    break;
+            }
+       
+        
+            // scansiono la parte in cui compaiono i report fattura
+            while (in.hasNextLine()) {
+              
                 if (line.contains(id1)){
                     outputStream.println(" ");
                     outputStream.println("id1 "+line);                    
@@ -91,69 +64,106 @@ public class Scansionatore {
                     riga.next(); riga.next();
                     //memorizzo il campo 
                     String Num = riga.next();
-                    row.createCell(0).setCellValue("ciao");
                     //System.out.println(Num);
+                    data[n_row][0]=Num;
 
-                }
-                
-                if (line.contains(id2)){
+                    n_row++;
+                    n_FCIVA=5; // punatore per i fuori campo iva
+
+                } else if (line.contains(id2)){
                     outputStream.println("id2 "+line);
                     
                     Scanner riga = new Scanner(line);
                     riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Con = riga.next();
                     //System.out.println(Tot_Con);
-                }
+                    data[n_row-1][1]=Tot_Con;
 
-                if (line.contains(id3)){
+                    
+                } else if (line.contains(id3)){
                     outputStream.println("id3 "+line);
                     
                     Scanner riga = new Scanner(line);
                     riga.next(); riga.next();
                     String Tot_Traff = riga.next();
-                    //System.out.println(Tot_Traff);                   
+                    //System.out.println(Tot_Traff);
+                    data[n_row-1][2]=Tot_Traff;
  
-                }
-                
-                if (line.contains(id4)){
+                } else if (line.contains(id4)){
                     outputStream.println("id4 "+line);
                     
                     Scanner riga = new Scanner(line);
                     riga.next(); riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Altri = riga.next();
-                    //System.out.println(Tot_Altri);                    
-                }
-                
-                if (line.contains(id5)||line.contains(id6)){
+                    //System.out.println(Tot_Altri);
+                    data[n_row-1][3]=Tot_Altri;
+                    
+                } else if (line.contains(id5)||line.contains(id6)){
                     outputStream.println("id5/id6 "+line);
                     
                     Scanner riga = new Scanner(line);
                     riga.next();
                     String Tot = riga.next();
-                    //System.out.println(Tot);                    
-                }
-          
-                if (line.contains(id7)){
+                    //System.out.println(Tot);
+                    data[n_row-1][4]=Tot;
+                    
+                } else if (line.contains(id7)){
                     outputStream.println("id7 "+line);
                     
                     Scanner riga = new Scanner(line);
-                    riga.next();
-                    String FCIVA = riga.next();
-                    //System.out.println(FCIVA); 
+                    //rilevo il valore numero del fuori campo iva
+                    String a = riga.next();
+                    String b = riga.next();
+                    while (!b.equals(id7)){
+                    a=b;
+                    b = riga.next();                    
+                    }
+                    String FCIVA = a;
+                    //System.out.println(FCIVA);
+                    data[n_row-1][n_FCIVA]=FCIVA;
+                    n_FCIVA++;
                 }                  
             
-            n_row++;
+            line = in.nextLine();
+            
+                
             }
+            
         outputStream.close();        
         inputStream.close();
-        
-        FileOutputStream fileXLSOut = new FileOutputStream(MacinaPdf.nomeFile+".xls");
-        wb.write(fileXLSOut);
-        fileXLSOut.close();        
+
+
         
         } catch(IOException e){
             JOptionPane.showMessageDialog(null,"Scansionatore.scansiona ** "+e);
         }
-    }
+                
+    //intestazione
+    data[0][0]=id1;    
+    data[0][1]=id2;
+    data[0][2]=id3;    
+    data[0][3]=id4;
+    data[0][4]="Totale";
+    data[0][5]=id7;
+    data[0][6]=id7;
+    data[0][7]=id7;
+    data[0][8]=id7;
+    data[0][9]=id7;
     
+    return data;
+
+//            STAMPA DEL ARRAY data
+//            int rownum;
+//            for (rownum = (short) 0; rownum < 500; rownum++) { 
+//                for (short cellnum = (short) 0; cellnum < 10; cellnum += 1) {
+//                    System.out.println(rownum+" "+cellnum+" "+data[rownum][cellnum]+" ");
+//                }
+//            System.out.println("\n");    
+//            }
+    
+    }
 }
+  
+
+
+
