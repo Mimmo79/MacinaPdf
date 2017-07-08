@@ -20,7 +20,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  */
 public class MacinaPdf {
 
-    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
+    public static String nomeFile="C:\\Users\\Massi\\Desktop\\Telecom\\TICRMB_2017_C40_4220517800019165";
 
     
     public static void main(String[] args) throws Exception {   
@@ -32,7 +32,9 @@ public class MacinaPdf {
        outputStream.println(stripper.getText(inputDoc));
        outputStream.close();
        //ripulisco il file e lo savo con nome diverso
-       Scansionatore.scansiona();
+       String [][] data = Scansionatore.scansiona();
+       Excel.compilaExcel(data);
+       
        
 
        
