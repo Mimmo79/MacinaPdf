@@ -7,7 +7,6 @@ package macinapdf;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -18,23 +17,21 @@ import org.apache.pdfbox.text.PDFTextStripper;
  */
 
 public class MacinaPdf {
-
-    public static String nomeFile="C:\\Users\\Massi\\Desktop\\Telecom\\TICRMB_2017_C40_4220517800019165";
+    // C:\\Users\\Massi\\Desktop\\Telecom\\
+    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
 
     
     public static void main(String[] args) throws Exception {   
        //converto il file in .txt
-       File file = new File(nomeFile+".pdf");
+       File file = new File(nomeFile+".pdf");                       // apro il file .pdf
        PDDocument inputDoc= PDDocument.load(file);   
-       PDFTextStripper stripper = new PDFTextStripper();
+       PDFTextStripper stripper = new PDFTextStripper();            // lo strippo
        PrintWriter outputStream = new PrintWriter(new FileWriter(nomeFile+".txt"));
-       outputStream.println(stripper.getText(inputDoc));
+       outputStream.println(stripper.getText(inputDoc));            // salvo lo strippo in un .txt
        outputStream.close();
-       //ripulisco il file e lo savo con nome diverso
-       //estraggo i dati e li salvo in un array bidimensionale
-       String [][] data = Scansionatore.scansiona();
-       //passo l'array ad un methodo per la scrittura su un file excel
-       Excel.compilaExcel(data);
+       String [][] data = Scansionatore.scansiona();            //ripulisco il file e lo savo con nome diverso
+                                                                //estraggo i dati e li salvo in un array bidimensionale
+       Excel.compilaExcel(data);                                //passo l'array ad un methodo per la scrittura su un file excel
      
     } 
 }
