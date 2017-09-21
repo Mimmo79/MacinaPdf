@@ -18,7 +18,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 public class MacinaPdf {
     // C:\\Users\\Massi\\Desktop\\Telecom\\
-    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
+    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C52_DOM_4220517X00000475";
 
     
     public static void main(String[] args) throws Exception {   
@@ -29,8 +29,7 @@ public class MacinaPdf {
        PrintWriter outputStream = new PrintWriter(new FileWriter(nomeFile+".txt"));
        outputStream.println(stripper.getText(inputDoc));            // salvo lo strippo in un .txt
        outputStream.close();
-       String [][] data = Scansionatore.scansiona();            //ripulisco il file e lo savo con nome diverso
-                                                                //estraggo i dati e li salvo in un array bidimensionale
+       String [][] data = Scansionatore.scansiona();            //elaboro il pdf ed estraggo i dati in un array                                                                //estraggo i dati e li salvo in un array bidimensionale
        Excel.compilaExcel(data);                                //passo l'array ad un methodo per la scrittura su un file excel
      
     } 
