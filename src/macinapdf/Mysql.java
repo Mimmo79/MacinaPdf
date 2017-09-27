@@ -15,9 +15,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Version {
+public class Mysql {
 
-    public static void main(String[] args) {
+    public boolean esisteRecord (){
 
         Connection con = null;
         Statement st = null;
@@ -31,16 +31,17 @@ public class Version {
             
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
-            //rs = st.executeQuery("SELECT VERSION()");select * from tabella where id = 2
+            //rs = st.executeQuery("SELECT VERSION()");
             rs = st.executeQuery("select * from `telefonia`.`ric_dati` where nSIM = 30204322953");
             if (rs.next()) {
-                
-                System.out.println(rs.getString(2));
-            }
+                return true;
+                //System.out.println(rs.getString(2));
+            } else 
+            
 
         } catch (SQLException ex) {
         
-            Logger lgr = Logger.getLogger(Version.class.getName());
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
 
         } finally {
@@ -61,7 +62,7 @@ public class Version {
 
             } catch (SQLException ex) {
                 
-                Logger lgr = Logger.getLogger(Version.class.getName());
+                Logger lgr = Logger.getLogger(Mysql.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
