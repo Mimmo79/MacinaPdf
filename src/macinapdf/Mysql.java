@@ -17,26 +17,23 @@ import java.util.logging.Logger;
 
 public class Mysql {
 
-    public boolean esisteRecord (){
+    static String url = "jdbc:mysql://localhost:3306";
+    static String user = "root";
+    static String password = "";
+
+    public static boolean esisteRecord (String db, String tabella, String campo, String record){
 
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
-
-        String url = "jdbc:mysql://lnx023:3306";
-        String user = "telefonia";
-        String password = "telefonia";
+        boolean result = false;
 
         try {
             
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
-            //rs = st.executeQuery("SELECT VERSION()");
-            rs = st.executeQuery("select * from `telefonia`.`ric_dati` where nSIM = 30204322953");
-            if (rs.next()) {
-                return true;
-                //System.out.println(rs.getString(2));
-            } else 
+            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
+            result = rs.next();
             
 
         } catch (SQLException ex) {
@@ -48,25 +45,26 @@ public class Mysql {
             
             try {
                 
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
                 
-                if (st != null) {
+                if (st != null)
                     st.close();
-                }
-                
-                if (con != null) {
+                            
+                if (con != null) 
                     con.close();
-                }
-
+                              
             } catch (SQLException ex) {
                 
                 Logger lgr = Logger.getLogger(Mysql.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+    
+        return result;
     }
+    
 }
+
     
 
