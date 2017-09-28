@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 public class Mysql {
 
-    static String url = "jdbc:mysql://localhost:3306";
-    static String user = "root";
-    static String password = "";
+    static String url = "jdbc:mysql://lnx023:3306";//lnx023-localhost
+    static String user = "telefonia";
+    static String password = "telefonia";
 
     public static boolean esisteRecord (String db, String tabella, String campo, String record){
 
@@ -64,6 +64,45 @@ public class Mysql {
         return result;
     }
     
+    public static void inserisciRecord (String db, String tabella, String campo, String record){
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            
+            con = DriverManager.getConnection(url, user, password);
+            st = con.createStatement();
+            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
+            rs.next();
+            
+
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            
+            try {
+                
+                if (rs != null)
+                    rs.close();
+                
+                if (st != null)
+                    st.close();
+                            
+                if (con != null) 
+                    con.close();
+                              
+            } catch (SQLException ex) {
+                
+                Logger lgr = Logger.getLogger(Mysql.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
+    }
 }
 
     
