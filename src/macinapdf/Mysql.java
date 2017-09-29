@@ -73,8 +73,11 @@ public class Mysql {
             
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
-            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
-            rs.next();
+            //System.out.println("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
+            st.executeUpdate("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
+            //pst = con.prepareStatement("INSERT INTO Authors(Name) VALUES(?)");
+            //pst.setString(1, author);
+            //pst.executeUpdate();
             
 
         } catch (SQLException ex) {

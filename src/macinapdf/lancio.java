@@ -14,7 +14,9 @@ public class lancio {
     
         
         //db-tab-campo-record
-        System.out.println(Mysql.esisteRecord("telefonia","ric_voce","nsim","3204322933"));
+        System.out.println(Mysql.esisteRecord("telefonia","linee_fatture","num_linea","11111"));
+        if (!Mysql.esisteRecord("telefonia","linee_fatture","num_linea","11111")) 
+            Mysql.inserisciRecord("telefonia","linee_fatture","num_linea","11111");
     }
     
 }
