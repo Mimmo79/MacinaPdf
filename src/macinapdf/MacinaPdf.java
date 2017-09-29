@@ -18,7 +18,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 public class MacinaPdf {
     // C:\\Users\\Massi\\Desktop\\Telecom\\
-    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C52_DOM_4220517X00000475";
+    public static String nomeFile="C:\\Users\\Massi\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
 
     
     public static void main(String[] args) throws Exception {   
