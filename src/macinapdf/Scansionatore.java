@@ -26,11 +26,16 @@ public class Scansionatore {
     public static String id5="TOTALE -";
     public static String id6="TOTALE +";
     public static String id7="F.C.IVA";
+    public static String id8="CAP SPESA";
     public static int n_row=1;
     public static int n_FCIVA=0;
-    public static String[][] data = new String[500][10];
-
-   
+    public static String[][] data = new String[500][11];
+    
+    /*
+    formato dell'array risultato
+    La prima riga contiene l'intestazione
+    [id1][id2][id3][id4][id5/6][id7]
+    */
     
     public static String[][] scansiona() {
 
@@ -64,6 +69,13 @@ public class Scansionatore {
                     //System.out.println(Num);
                     data[n_row][0]=Num;
                     
+                    //dati DB
+                    if (Mysql.esisteRecord("telefonia_fissa","linee_fatture_completo","n_linea",Num)) {
+                        data[n_row][10] = Mysql.recuperaRecord("telefonia_fissa","linee_fatture_completo","n_linea",Num,"cap_spesa");
+                    } else {
+                        data[n_row][10] = id8 + " non presente";
+                    }
+      
                     //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
                     int i;
                     for (i=1; i<10; i++){
@@ -151,6 +163,7 @@ public class Scansionatore {
     data[0][7]=id7;
     data[0][8]=id7;
     data[0][9]=id7;
+    data[0][10]=id8;
     
     
 
