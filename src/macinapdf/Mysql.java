@@ -21,6 +21,7 @@ public class Mysql {
     static String user = "root";
     static String password = "";
 
+    
     public static boolean esisteRecord (String db, String tabella, String campo, String record){
 
         Connection con = null;
@@ -34,7 +35,6 @@ public class Mysql {
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
             result = rs.next();
-            
 
         } catch (SQLException ex) {
         
@@ -63,7 +63,7 @@ public class Mysql {
     
         return result;
     }
-    
+        
     public static void inserisciRecord (String db, String tabella, String campo, String record){
         Connection con = null;
         Statement st = null;
@@ -73,11 +73,7 @@ public class Mysql {
             
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
-            //System.out.println("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
             st.executeUpdate("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
-            //pst = con.prepareStatement("INSERT INTO Authors(Name) VALUES(?)");
-            //pst.setString(1, author);
-            //pst.executeUpdate();
             
 
         } catch (SQLException ex) {
@@ -106,6 +102,7 @@ public class Mysql {
         }
         
     }
+    
 }
 
     
