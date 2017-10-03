@@ -70,7 +70,7 @@ public class Scansionatore {
                     data[n_row][0]=Num;
                     
                     //dati DB
-                    if (Mysql.esisteRecord("telefonia_fissa","linee_fatture_completo","n_linea",Num)) {
+                    if (Mysql.esisteRecord("telefonia","linee_fatture_completo","n_linea",Num)) {
                         data[n_row][10] = Mysql.recuperaRecord("telefonia_fissa","linee_fatture_completo","n_linea",Num,"cap_spesa");
                     } else {
                         data[n_row][10] = id8 + " non presente";

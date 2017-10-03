@@ -1,0 +1,5 @@
+INSERT INTO fisso_dati_linee (n_linea, cap_spesa, cdr, cdg, ril_iva, impegno, note)
+SELECT n_linea, cap_spesa, cdr, cdg, ril_iva, impegno, note
+FROM fisso_fatture_riepilogo
+
+

@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 public class Mysql {
 
-    static String url = "jdbc:mysql://localhost:3306";//lnx023-localhost
-    static String user = "root";
-    static String password = "";
+    static String url = "jdbc:mysql://lnx023:3306";//lnx023-localhost
+    static String user = "telefonia";
+    static String password = "telefonia";
 
     
     public static boolean esisteRecord (String db, String tabella, String campo, String record){
