@@ -38,7 +38,7 @@ public class Excel {
 
                     Row r = sheet1.createRow(rownum);               // creo una riga
                     
-                    for (short cellnum = (short) 0; cellnum < 11; cellnum += 1) {                          
+                    for (short cellnum = (short) 0; cellnum < 20; cellnum += 1) {                          
 
                         Cell c = r.createCell(cellnum);             // creo la cella
                         if (rownum==0){
@@ -52,7 +52,9 @@ public class Excel {
                             c.setCellStyle(cs);                     // assegno alla cella lo stile
                             c.setCellValue(data[rownum][cellnum]);  // inserisco i valori
                         } else {
-                            if (cellnum==0 | cellnum==10){
+                            if (cellnum==0 | cellnum==1 | cellnum==2 |
+                                cellnum==3 | cellnum==4 | cellnum==5 | 
+                                cellnum==6){
                                 c.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
                             } else {
                                 c.setCellValue(Double.parseDouble(data[rownum][cellnum]));  // salvo il campo come double  
