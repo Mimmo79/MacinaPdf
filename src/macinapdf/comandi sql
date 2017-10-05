@@ -1,5 +1,40 @@
+Istruzioni per separare i dati dalla tabella principale
+--------------------------------------------------------
+--------------------------------------------------------
+
+creo la tabella dei soli campi di interesse
+-------------------------------------------
 INSERT INTO fisso_dati_linee (n_linea, cap_spesa, cdr, cdg, ril_iva, impegno, note)
 SELECT n_linea, cap_spesa, cdr, cdg, ril_iva, impegno, note
 FROM fisso_fatture_riepilogo
 
 
+copiare una colonna di valori distinti da una tabella ad un'altra
+-----------------------------------------------------------------
+INSERT INTO fisso_cap_spesa (cap_spesa)
+SELECT DISTINCT cap_spesa
+FROM fisso_dati_linee
+
+
+copiare una colonna di campi distinti da una tabella ad un'altra con condizione
+-------------------------------------------------------------------------------
+INSERT INTO fisso_dati_linee (cap_spesa_id)
+SELECT fisso_cap_spesa.cap_spesa
+FROM fisso_cap_spesa,fisso_dati_linee
+WHERE fisso_dati_linee.cap_spesa=fisso_cap_spesa.cap_spesa
+
+
+copiare i valori del campo chiave esterna
+-----------------------------------------
+UPDATE fisso_dati_linee
+SET cap_spesa_id = (    SELECT fisso_cap_spesa.id
+                        FROM fisso_cap_spesa
+			WHERE fisso_cap_spesa.cap_spesa=fisso_dati_linee.cap_spesa)
+
+
+unione di due tabelle con campo chiave esterna
+----------------------------------------------
+SELECT b.id,b.n_linea,a.cap_spesa 
+FROM fisso_cap_spesa AS a 
+INNER JOIN fisso_dati_linee AS b 
+ON a.id=b.cap_spesa

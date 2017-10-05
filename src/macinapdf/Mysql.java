@@ -148,6 +148,52 @@ public class Mysql {
         return result;
         
     }
+        
+    public static String recuperaRecordJoin (String db, String tabella, String campo, String record_ricercato, String cln_recupero){
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        String result = null;
+
+        try {
+            
+            con = DriverManager.getConnection(url, user, password);
+            st = con.createStatement();
+            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
+            if (rs.next()){
+                result=rs.getString(cln_recupero);
+            }
+            
+            
+
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            
+            try {
+                
+                if (rs != null)
+                    rs.close();
+                
+                if (st != null)
+                    st.close();
+                            
+                if (con != null) 
+                    con.close();
+                              
+            } catch (SQLException ex) {
+                
+                Logger lgr = Logger.getLogger(Mysql.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
+        return result;
+        
+    }
     
 }
     

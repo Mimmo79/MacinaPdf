@@ -25,7 +25,7 @@ public class Scansionatore {
     public static String id3="RIL. IVA";
     public static String id4="IMPEGNO";
     public static String id5="NOTE";    
-    public static String id6="LINEA NUMERO";
+    public static String id6="Linea numero";
     public static String id7="TOTALE CONTRIBUTI E ABBONAMENTI";
     public static String id8="TOTALE TRAFFICO";
     public static String id9="TOTALE ALTRI ADDEBITI E ACCREDITI";
@@ -70,7 +70,7 @@ public class Scansionatore {
 
                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
                     int i;
-                    for (i=0; i<21; i++){
+                    for (i=0; i<20; i++){
                         data[n_row][i]="0";
                     }                    
              
@@ -83,8 +83,8 @@ public class Scansionatore {
                     data[n_row][6]=Num;
                     
                     //dati DB
-                    if (Mysql.esisteRecord("telefonia","linee_fatture_completo","n_linea",Num)) {
-                        data[n_row][0] = Mysql.recuperaRecord("telefonia_fissa","linee_fatture_completo","n_linea",Num,"cap_spesa");
+                    if (Mysql.esisteRecord("telefonia","fisso_dati_linee","n_linea",Num)) {
+                        data[n_row][0] = Mysql.recuperaRecord("telefonia","fisso_dati_linee","n_linea",Num,"cap_spesa");
                     } else {
                         data[n_row][0] = id0 + " non presente";
                     }
