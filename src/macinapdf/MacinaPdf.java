@@ -11,6 +11,14 @@ import java.io.PrintWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author SenMa
@@ -18,8 +26,43 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 public class MacinaPdf {
     // C:\\Users\\Massi\\Desktop\\Telecom\\
-    public static String nomeFile="C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
+    public static String nomeFile="C:\\Users\\massi\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165";
+    static String url;
 
+    public void pullParameters(){
+        Properties props = new Properties();
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream("C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf\\parametri");
+            props.load(in);
+
+        } catch (FileNotFoundException ex) {
+
+            Logger lgr = Logger.getLogger(MacinaPdf.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } catch (IOException ex) {
+
+            Logger lgr = Logger.getLogger(MacinaPdf.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+
+            try {
+                 if (in != null) {
+                     in.close();
+                 }
+            } catch (IOException ex) {
+                Logger lgr = Logger.getLogger(MacinaPdf.class.getName());
+                lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+
+        url = props.getProperty("host");
+        System.out.println(url );
+    }
+    
+    
     
     public static void main(String[] args) throws Exception {   
        //converto il file in .txt
@@ -32,5 +75,6 @@ public class MacinaPdf {
        String [][] data = Scansionatore.scansiona();            //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
        Excel.compilaExcel(data);                                //passo l'array ad un methodo per la scrittura su un file excel
      
+       
     } 
 }

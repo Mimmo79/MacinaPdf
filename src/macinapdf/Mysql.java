@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 public class Mysql {
 
-    static String url = "jdbc:mysql://lnx023:3306";//lnx023-localhost
-    static String user = "telefonia";
-    static String password = "telefonia";
+    static String url = "jdbc:mysql://localhost:3306";//lnx023-localhost
+    static String user = "root";
+    static String password = "";
 
     
     public static boolean esisteRecord (String db, String tabella, String campo, String record){
@@ -103,7 +103,7 @@ public class Mysql {
         
     }
     
-    public static String recuperaRecord (String db, String tabella, String campo, String record_ricercato, String cln_recupero){
+    public static String recuperaRecord (String db, String tabella, String campo, String record_ricercato, String campo_recupero){
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -115,7 +115,7 @@ public class Mysql {
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
             if (rs.next()){
-                result=rs.getString(cln_recupero);
+                result=rs.getString(campo_recupero);
             }
             
             
@@ -149,7 +149,7 @@ public class Mysql {
         
     }
         
-    public static String recuperaRecordJoin (String db, String tabella, String campo, String record_ricercato, String cln_recupero){
+    public static String recuperaRecordJoin (String db, String tabellaA, String tabellaB, String campo, String record_ricercato, String campo_recupero){
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -159,10 +159,19 @@ public class Mysql {
             
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
-            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
+            //System.out.println( );
+            rs = st.executeQuery(   "SELECT a.* " +
+                        "FROM " + db + "." + tabellaA + " AS a " +
+                        "INNER JOIN " + db + "." + tabellaB + " AS b " +
+                        "ON a.id=b." + campo_recupero + 
+                        " WHERE " + campo +
+                        "=" + record_ricercato +"");
+
             if (rs.next()){
-                result=rs.getString(cln_recupero);
+                result=rs.getString(campo_recupero);
             }
+            
+
             
             
 

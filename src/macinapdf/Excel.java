@@ -9,12 +9,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+
+
 
 /**
  *
@@ -39,7 +43,6 @@ public class Excel {
                     Row r = sheet1.createRow(rownum);               // creo una riga
                     
                     for (short cellnum = (short) 0; cellnum < 20; cellnum += 1) {                          
-
                         Cell c = r.createCell(cellnum);             // creo la cella
                         if (rownum==0){
                             CellStyle cs = wb.createCellStyle();    // creo un CellStyle
@@ -48,7 +51,6 @@ public class Excel {
                             f.setColor( (short)0xc );               // imposto il colore del font
                             f.setBold(true);                        // grassetto
                             cs.setFont(f);                          // assegno al CellStyle il font
-                            sheet1.autoSizeColumn(rownum, true);
                             c.setCellStyle(cs);                     // assegno alla cella lo stile
                             c.setCellValue(data[rownum][cellnum]);  // inserisco i valori
                         } else {
