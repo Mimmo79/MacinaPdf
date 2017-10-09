@@ -175,14 +175,11 @@ public class Scansionatore {
                 }                  
             
             line = in.nextLine();
-            
                 
             }
             
         outputStream.close();        
         inputStream.close();
-
-
         
         } catch(IOException e){
             JOptionPane.showMessageDialog(null,"Scansionatore.scansiona ** "+e);
@@ -208,18 +205,6 @@ public class Scansionatore {
     
         
     return data;
-
-//            STAMPA DEL ARRAY data
-//            int rownum;
-//            for (rownum = (short) 0; rownum < 500; rownum++) { 
-//                for (short cellnum = (short) 0; cellnum < 10; cellnum += 1) {
-//                    System.out.println(rownum+" "+cellnum+" "+data[rownum][cellnum]+" ");
-//                }
-//            System.out.println("\n");    
-//            }
-    
-    
-
 
     }
 }

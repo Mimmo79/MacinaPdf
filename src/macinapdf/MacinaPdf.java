@@ -26,12 +26,11 @@ import java.util.logging.Logger;
 
 public class MacinaPdf {
 
+    static String fileParam="C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf,,C:\\Users\\massi\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
     public static String nomeFile;
-    
     public static String dbUrl;
     public static String dbUser;
     public static String dbPwd;
-
     public static String dbName;
     public static String tab;
     public static String nome_campo_linea;
@@ -41,7 +40,7 @@ public class MacinaPdf {
         Properties props = new Properties();
         FileInputStream in = null;
         try {
-            in = new FileInputStream("C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf\\parametri");
+            in = new FileInputStream(fileParam); 
             props.load(in);
 
         } catch (FileNotFoundException ex) {
@@ -73,9 +72,6 @@ public class MacinaPdf {
         nomeFile = props.getProperty("nomeFile");
         tab = props.getProperty("tab");
         nome_campo_linea = props.getProperty("nome_campo_linea");
-        
-        
-        //System.out.println(dbUrl+dbUser+dbPwd);
         
     }
     

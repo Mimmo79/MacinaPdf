@@ -1,21 +1,24 @@
 CONNETTIVITA' DB
 --------------------------
-dbUrl=jdbc:mysql://lnx023:3306/
-dbUser=telefonia
-dbPwd=telefonia
+dbUrl   =   jdbc:mysql://localhost:3306/
+dbUser  =   root
+dbPwd   =
 
-jdbc:mysql://lnx023:3306/telefonia || jdbc:mysql://localhost:3306/telefonia
+jdbc:mysql://lnx023:3306 
+jdbc:mysql://localhost:3306
 
 
 
 OPERAZIONI SU DB
 --------------------------
-dbName=telefonia
-tab=fisso_fatture_riepilogo
-nome_campo_linea=n_linea
+dbName              =   telefonia
+tab                 =   fisso_fatture_riepilogo
+nome_campo_linea    =   n_linea
 
 
 
 FILE DA ELABORARE
 ------------------
-nomeFile=C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165
+nomeFile    =   C:\\Users\\massi\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165
+C:\\Users\\senma\\Desktop\\File Telecom\\
+C:\\Users\\massi\\Desktop\\File Telecom\\
