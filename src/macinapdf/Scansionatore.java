@@ -39,11 +39,7 @@ public class Scansionatore {
     public static int n_row=1;  // nella prima riga ci sono le intestazioni
     public static int n_FCIVA=0;
     public static String[][] data = new String[500][20];
-    public static String[] info = new String[5];
     
-    public static String db="telefonia";
-    public static String tab="fisso_fatture_riepilogo";
-    public static String nome_campo_linea="n_linea";
     
     /*
     formato dell'array risultato
@@ -69,9 +65,7 @@ public class Scansionatore {
                     Scanner riga = new Scanner(line);
                     //memorizzo il campo 
                     String bim = riga.next();
-                    info[0]=bim;
                     String anno = riga.next();
-                    info[1]=anno;
                     //System.out.println(bim);
                 }
                 break;
@@ -108,13 +102,13 @@ public class Scansionatore {
                     data[n_row][6]=Num;
                     
                     //dati DB
-                    if (Mysql.esisteRecord(db,tab,nome_campo_linea,Num)) {
-                        data[n_row][0] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"cap_spesa");
-                        data[n_row][1] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"cdr");
-                        data[n_row][2] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"cdg");
-                        data[n_row][3] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"ril_iva");
-                        data[n_row][4] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"impegno");
-                        data[n_row][5] = Mysql.recuperaRecord(db,tab,nome_campo_linea,Num,"note");
+                    if (Mysql.esisteRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num)) {
+                        data[n_row][0] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cap_spesa");
+                        data[n_row][1] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdr");
+                        data[n_row][2] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdg");
+                        data[n_row][3] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"ril_iva");
+                        data[n_row][4] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"impegno");
+                        data[n_row][5] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"note");
                     } else {
                         for (i=0; i<6; i++){      
                             data[n_row][i] = "dato non presente";
@@ -174,9 +168,9 @@ public class Scansionatore {
                     b = riga.next();                    
                     }
                     //System.out.println(a);
-                    double num=Double.parseDouble(a);
+
                     data[n_row-1][n_FCIVA]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 12 in su
-                    data[n_row-1][16]=data[n_row-1][16]+data[n_row-1][n_FCIVA];
+
                     n_FCIVA++;
                 }                  
             

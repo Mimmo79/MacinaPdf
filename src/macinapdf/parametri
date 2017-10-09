@@ -1,3 +1,21 @@
-db.url=jdbc:mysql://localhost:3306/testdb
-db.user=testuser
-db.passwd=test623
+CONNETTIVITA' DB
+--------------------------
+dbUrl=jdbc:mysql://lnx023:3306/
+dbUser=telefonia
+dbPwd=telefonia
+
+jdbc:mysql://lnx023:3306/telefonia || jdbc:mysql://localhost:3306/telefonia
+
+
+
+OPERAZIONI SU DB
+--------------------------
+dbName=telefonia
+tab=fisso_fatture_riepilogo
+nome_campo_linea=n_linea
+
+
+
+FILE DA ELABORARE
+------------------
+nomeFile=C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165

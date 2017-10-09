@@ -17,10 +17,6 @@ import java.util.logging.Logger;
 
 public class Mysql {
 
-    static String url = "jdbc:mysql://localhost:3306";//lnx023-localhost
-    static String user = "root";
-    static String password = "";
-
     
     public static boolean esisteRecord (String db, String tabella, String campo, String record){
 
@@ -31,7 +27,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(url, user, password);
+            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
             result = rs.next();
@@ -71,7 +67,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(url, user, password);
+            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
             st = con.createStatement();
             st.executeUpdate("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
             
@@ -111,7 +107,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(url, user, password);
+            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
             if (rs.next()){
@@ -157,7 +153,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(url, user, password);
+            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
             st = con.createStatement();
             //System.out.println( );
             rs = st.executeQuery(   "SELECT a.* " +
