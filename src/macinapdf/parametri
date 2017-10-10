@@ -1,8 +1,8 @@
 CONNETTIVITA' DB
 --------------------------
-dbUrl   =   jdbc:mysql://localhost:3306/
-dbUser  =   root
-dbPwd   =
+dbUrl   =   jdbc:mysql://lnx023:3306/
+dbUser  =   telefonia
+dbPwd   =   telefonia
 
 jdbc:mysql://lnx023:3306 
 jdbc:mysql://localhost:3306
@@ -19,6 +19,6 @@ nome_campo_linea    =   n_linea
 
 FILE DA ELABORARE
 ------------------
-nomeFile    =   C:\\Users\\massi\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165
+nomeFile    =   C:\\Users\\senma\\Desktop\\File Telecom\\TICRMB_2017_C40_4220517800019165
 C:\\Users\\senma\\Desktop\\File Telecom\\
 C:\\Users\\massi\\Desktop\\File Telecom\\

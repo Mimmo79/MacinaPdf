@@ -47,7 +47,7 @@ public class Scansionatore {
     [id1][id2][id3][id4][id5/6][id7]...
     */
     
-    public static String[][] scansiona() {
+    public static void scansiona() {
 
         try {   
             // apro il file .txt in lettura
@@ -202,9 +202,6 @@ public class Scansionatore {
     data[0][13]=id12;
     data[0][14]=id12;
     data[0][15]=id12;
-    
-        
-    return data;
 
     }
 }

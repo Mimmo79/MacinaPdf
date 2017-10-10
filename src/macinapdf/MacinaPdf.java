@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class MacinaPdf {
 
-    static String fileParam="C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf,,C:\\Users\\massi\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
+    static String fileParam="C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf---C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
     public static String nomeFile;
     public static String dbUrl;
     public static String dbUser;
