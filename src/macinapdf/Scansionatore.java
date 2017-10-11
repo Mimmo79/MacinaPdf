@@ -61,9 +61,9 @@ public class Scansionatore {
             //cerco i dati di intestazione
             while (in.hasNextLine()) {
                 line = in.nextLine();
-                System.out.println("ciao1")
+                System.out.println("ciao1");
                 if (line.contains(id20)){
-                    System.out.println("ciao2")
+                    System.out.println("ciao2");
                     line = in.nextLine();
                     Scanner riga = new Scanner(line);
                     //memorizzo il campo 
