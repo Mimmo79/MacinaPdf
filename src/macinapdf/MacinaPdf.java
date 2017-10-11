@@ -88,8 +88,8 @@ public class MacinaPdf {
         PrintWriter outputStream = new PrintWriter(new FileWriter(nomeFile+".txt"));
         outputStream.println(stripper.getText(inputDoc));            // salvo lo strippo in un .txt
         outputStream.close();
-        String [][] data = Scansionatore.scansiona();            //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
-        Excel.compilaExcel(data);                                //passo l'array ad un methodo per la scrittura su un file excel
+        Scansionatore.scansiona(nomeFile);                //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
+        //Excel.compilaExcel(Scansionatore.importiFatt);                                //passo l'array ad un methodo per la scrittura su un file excel
 
        
     } 
