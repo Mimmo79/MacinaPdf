@@ -27,7 +27,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
+            con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record+"");
             result = rs.next();
@@ -67,7 +67,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
+            con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
             st = con.createStatement();
             st.executeUpdate("INSERT INTO " + db + "." + tabella + " ( "+campo+" ) VALUES ("+record+")");
             
@@ -107,7 +107,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
+            con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
             st = con.createStatement();
             rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
             if (rs.next()){
@@ -153,7 +153,7 @@ public class Mysql {
 
         try {
             
-            con = DriverManager.getConnection(MacinaPdf.dbUrl, MacinaPdf.dbUser, MacinaPdf.dbPwd);
+            con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
             st = con.createStatement();
             //System.out.println( );
             rs = st.executeQuery(   "SELECT a.* " +

@@ -38,7 +38,7 @@ public class Excel {
         try {
 
             try ( // apro il file excel
-                FileOutputStream fileXLSOut = new FileOutputStream(MacinaPdf.nomeFile+".xls")) {
+                FileOutputStream fileXLSOut = new FileOutputStream(Main.nomeFile+".xls")) {
                 Workbook wb = new HSSFWorkbook();
                 Sheet sheet1 = wb.createSheet("Foglio 1");
                 
