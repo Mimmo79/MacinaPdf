@@ -18,30 +18,35 @@ import javax.swing.JOptionPane;
 public class Scansionatore {
     
     static String line = null;
+    static String bim,anno,nFatt;
 
-    public static String id_0="CAP SPESA";
-    public static String id_1="CdR";
-    public static String id_2="CdG";
-    public static String id_3="RIL. IVA";
-    public static String id_4="IMPEGNO";
-    public static String id_5="NOTE";
-    
-    public static String id0="Linea numero";
-    public static String id1="TOTALE CONTRIBUTI E ABBONAMENTI";
-    public static String id2="TOTALE TRAFFICO";
-    public static String id3="TOTALE ALTRI ADDEBITI E ACCREDITI";
-    public static String id4="TOTALE -";
-    public static String id5="TOTALE +";
-    public static String id6="F.C.IVA";
+    static String id0="Linea numero";
+    static String id1="TOTALE CONTRIBUTI E ABBONAMENTI";
+    static String id2="TOTALE TRAFFICO";
+    static String id3="TOTALE ALTRI ADDEBITI E ACCREDITI";
+    static String id4="F.C.IVA";
+    static String id5="TOTALE";
+    static String id6="Imponibile";
+    static String id7="IVA";
+    static String id8="TOTALE";
+    static String id9="Bimestre";
+    static String id10="Anno";
+    static String id11="n_fattura";
+    static String id12="CAP SPESA";
+    static String id13="CdR";
+    static String id14="CdG";
+    static String id15="RIL. IVA";
+    static String id16="IMPEGNO";
+
     
     public static String id20="Fattura bimestrale";
 
+
     
-    public static int n_row=1;  // nella prima riga ci sono le intestazioni
-    public static boolean n_FCIVA=true;
-    public static float val_FCIVA=0;
-    public static String[][] importiFatt = new String[500][11];
-    public static String[][] datiDB = new String[500][11];
+    static int n_row=1;  // nella prima riga ci sono le intestazioni
+    static boolean n_FCIVA=true;
+    static float val_FCIVA=0;
+    static String[][] data = new String[500][20];
     
     
     /*
@@ -50,7 +55,7 @@ public class Scansionatore {
     [id1][id2][id3][id4][id5/6][id7]...
     */
     
-    public static void scansiona(String nomeFile) {
+    public static String[][] scansiona(String nomeFile) {
 
         try {   
             // apro il file .txt in lettura
@@ -65,13 +70,12 @@ public class Scansionatore {
                 if (line.contains(id20)){
                     line = in.nextLine();
                     Scanner riga = new Scanner(line);
-                    String bim = riga.next();                   //bimestre
-                    String anno = riga.next().replace(":","");  //anno
+                    bim = riga.next();                   //bimestre
+                    anno = riga.next().replace(":","");  //anno
                     line = in.nextLine();
                     riga = new Scanner(line);
                     riga.next();riga.next();
-                    String nFatt = riga.next();                 //n. fattura
-                    System.out.println(bim+anno+nFatt);
+                    nFatt = riga.next();                 //n. fattura
                 
                 break;
                 }
@@ -95,34 +99,37 @@ public class Scansionatore {
 
                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
                     int i;
-                    for (i=0; i<10; i++){
-                        importiFatt[n_row][i]="0";
+                    for (i=0; i<20; i++){
+                        data[n_row][i]="0";
                     }                    
-             
+                    // numero linea
                     Scanner riga = new Scanner(line);
-                    //salto i campi che non mi interressano
                     riga.next(); riga.next();
-                    //memorizzo il campo 
                     String Num = riga.next();
-                    //System.out.println(Num);
-                    importiFatt[n_row][0]=Num;
+                    data[n_row][0]=Num;
+                    
+                    // dati fattura
+                    data[n_row][9] = bim;
+                    data[n_row][10] = anno;
+                    data[n_row][11] = nFatt;
+                    
                     
                     //dati DB
                     if (Mysql.esisteRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num)) {
-                        datiDB[n_row][0] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cap_spesa");
-                        datiDB[n_row][1] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdr");
-                        datiDB[n_row][2] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdg");
-                        datiDB[n_row][3] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"ril_iva");
-                        datiDB[n_row][4] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"impegno");
-                        datiDB[n_row][5] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"note");
+                        data[n_row][12] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cap_spesa");
+                        data[n_row][13] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdr");
+                        data[n_row][14] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"cdg");
+                        data[n_row][15] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"ril_iva");
+                        data[n_row][16] = Mysql.recuperaRecord(MacinaPdf.dbName,MacinaPdf.tab,MacinaPdf.nome_campo_linea,Num,"impegno");
+
                     } else {
-                        for (i=0; i<6; i++){      
-                            datiDB[n_row][i] = "dato non presente";
+                        for (i=12; i<17; i++){      
+                            data[n_row][i] = "dato non presente";
                         }
                     }
-      
-                     
-                    n_row++;
+                    
+                    
+                    n_row++;        //contatore linee array
                     val_FCIVA=0;    //valore somma di tutti i FCIVA relativi ad un numero
                     n_FCIVA=true;   //controllo di FCIVA multipli
 
@@ -133,7 +140,7 @@ public class Scansionatore {
                     riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Con = riga.next();
                     //System.out.println(Tot_Con);
-                    importiFatt[n_row-1][1]=Tot_Con.replace(".","").replace(",",".");  //il primo elimina i punti, il secondo converte le virgole in punti
+                    data[n_row-1][1]=Tot_Con.replace(".","").replace(",",".");  //il primo elimina i punti, il secondo converte le virgole in punti
 
                     
                 } else if (line.contains(id2)){
@@ -143,7 +150,7 @@ public class Scansionatore {
                     riga.next(); riga.next();
                     String Tot_Traff = riga.next();
                     //System.out.println(Tot_Traff);
-                    importiFatt[n_row-1][2]=Tot_Traff.replace(".","").replace(",",".");
+                    data[n_row-1][2]=Tot_Traff.replace(".","").replace(",",".");
  
                 } else if (line.contains(id3)){
                     outputStream.println("id3 "+line);
@@ -152,43 +159,42 @@ public class Scansionatore {
                     riga.next(); riga.next(); riga.next(); riga.next(); riga.next();
                     String Tot_Altri = riga.next();
                     //System.out.println(Tot_Altri);
-                    importiFatt[n_row-1][3]=Tot_Altri.replace(".","").replace(",",".");
-                    
-                } else if (line.contains(id4)||line.contains(id5)){
-                    outputStream.println("id4/id5 "+line);
-                    
-                    Scanner riga = new Scanner(line);
-                    riga.next();
-                    String Tot = riga.next();
-                    //System.out.println(Tot);
-                    importiFatt[n_row-1][4]=Tot.replace(".","").replace(",",".");
-                    
-                } else if (line.contains(id6)){
-                    outputStream.println("id6 "+line);
+                    data[n_row-1][3]=Tot_Altri.replace(".","").replace(",",".");
+                                     
+                } else if (line.contains(id4)){
+                    outputStream.println("id4 "+line);
                     
                     Scanner riga = new Scanner(line);
                     //rilevo il valore del fuori campo iva
                     String a = riga.next();
                     String b = riga.next();
-                    while (!b.equals(id6)){
+                    while (!b.equals(id4)){
                     a=b;
                     b = riga.next();                    
                     }
-                    //System.out.println(a);
 
-                    importiFatt[n_row-1][5]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 12 in su
+                    data[n_row-1][4]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 12 in su
                     
                     // sommo i F.C.IVA multipli
                     if (n_FCIVA){
-                        val_FCIVA = Float.parseFloat(importiFatt[n_row-1][5]);
+                        val_FCIVA = Float.parseFloat(data[n_row-1][4]);
                     } else {
-                        val_FCIVA = val_FCIVA + Float.parseFloat(importiFatt[n_row-1][5]);
-                        importiFatt[n_row-1][5]=Float.toString(val_FCIVA);
-                        System.out.println("FCIVA : "+val_FCIVA+" "+importiFatt[n_row-1][5]);
+                        val_FCIVA = val_FCIVA + Float.parseFloat(data[n_row-1][4]);
+                        data[n_row-1][4]=Float.toString(val_FCIVA);
+                        //System.out.println("FCIVA : "+val_FCIVA+" "+importiFatt[n_row-1][5]);
                     }
-                    
                     n_FCIVA=false;
-                }                  
+                    
+                }   else if (line.contains(id5)){
+                    outputStream.println("id5"+line);
+                    
+                    Scanner riga = new Scanner(line);
+                    riga.next();
+                    String Tot = riga.next();
+                    //System.out.println(Tot);
+                    data[n_row-1][5]=Tot.replace(".","").replace(",","."); 
+                    
+                }
             
             line = in.nextLine();
                 
@@ -202,23 +208,27 @@ public class Scansionatore {
         }
                 
     //intestazione
-    importiFatt[0][0]=id0;    
-    importiFatt[0][1]=id1;
-    importiFatt[0][2]=id2;    
-    importiFatt[0][3]=id3;
-    importiFatt[0][4]=id4;
-    importiFatt[0][5]=id5;
-    importiFatt[0][6]=id6;
-    importiFatt[0][7]=id6;
-    importiFatt[0][8]=id6;
+    data[0][0]=id0;    
+    data[0][1]=id1;
+    data[0][2]=id2;    
+    data[0][3]=id3;
+    data[0][4]=id4;
+    data[0][5]=id5;
+    data[0][6]=id6;
+    data[0][7]=id7;
+    data[0][8]=id8;
+    data[0][9]=id9;
+    data[0][10]=id10;
+    data[0][11]=id11;
+    data[0][12]=id12;
+    data[0][13]=id13;
+    data[0][14]=id14;
+    data[0][15]=id15;
+    data[0][16]=id16;
 
-    //intestazione    
-    datiDB[0][0]=id_0;
-    datiDB[0][1]=id_1;
-    datiDB[0][2]=id_2;
-    datiDB[0][3]=id_3;
-    datiDB[0][4]=id_4;
-    datiDB[0][5]=id_5;
+    
+
+    return data;
 
 
     }

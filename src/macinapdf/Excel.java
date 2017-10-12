@@ -27,7 +27,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class Excel {
 
-    static int rownum;  
+    static int rownum;
+    static double imp=0;
+    static double iva=0;
+    static double tot=0;
+    
     
     public static void compilaExcel(String [][] data) {
         
@@ -42,7 +46,7 @@ public class Excel {
 
                     Row r = sheet1.createRow(rownum);               // creo una riga
                     
-                    for (short cellnum = (short) 0; cellnum < 20; cellnum += 1) {                          
+                    for (short cellnum = (short) 0; cellnum < 17; cellnum += 1) {                          
                         Cell c = r.createCell(cellnum);             // creo la cella
                         if (rownum==0){
                             CellStyle cs = wb.createCellStyle();    // creo un CellStyle
@@ -54,12 +58,21 @@ public class Excel {
                             c.setCellStyle(cs);                     // assegno alla cella lo stile
                             c.setCellValue(data[rownum][cellnum]);  // inserisco i valori
                         } else {
-                            if (cellnum==0 | cellnum==1 | cellnum==2 |
-                                cellnum==3 | cellnum==4 | cellnum==5 | 
-                                cellnum==6){
-                                c.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
+                            if (cellnum==1 | cellnum==2 |
+                                cellnum==3 | cellnum==4 | cellnum==5){
+                                c.setCellValue(Double.parseDouble(data[rownum][cellnum]));  // salvo il campo come double
+                            } else if (cellnum==6){
+                                imp = Double.parseDouble(data[rownum][5])-Double.parseDouble(data[rownum][4]);
+                                c.setCellValue(imp);
+                            } else if (cellnum==7){
+                                iva = (Double.parseDouble(data[rownum][5])-Double.parseDouble(data[rownum][4]))*0.22;
+                                c.setCellValue(iva);
+                            } else if (cellnum==8){
+                                tot = iva+imp-Double.parseDouble(data[rownum][4]);
+                                c.setCellValue(tot);
+                                
                             } else {
-                                c.setCellValue(Double.parseDouble(data[rownum][cellnum]));  // salvo il campo come double  
+                                 c.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
                             }        
                         } 
                     }

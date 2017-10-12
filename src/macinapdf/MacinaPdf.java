@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class MacinaPdf {
 
-    static String fileParam="C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf---C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
+    static String fileParam="C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf---C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
     public static String nomeFile;
     public static String dbUrl;
     public static String dbUser;
@@ -88,8 +88,8 @@ public class MacinaPdf {
         PrintWriter outputStream = new PrintWriter(new FileWriter(nomeFile+".txt"));
         outputStream.println(stripper.getText(inputDoc));            // salvo lo strippo in un .txt
         outputStream.close();
-        Scansionatore.scansiona(nomeFile);                //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
-        //Excel.compilaExcel(Scansionatore.importiFatt);                                //passo l'array ad un methodo per la scrittura su un file excel
+        String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
+        Excel.compilaExcel(data);                                //passo l'array ad un methodo per la scrittura su un file excel
 
        
     } 
