@@ -38,9 +38,10 @@ public class Scansionatore {
 
     
     public static int n_row=1;  // nella prima riga ci sono le intestazioni
-    public static int n_FCIVA=0;
+    public static boolean n_FCIVA=true;
+    public static float val_FCIVA=0;
     public static String[][] importiFatt = new String[500][11];
-    public static String[][] datiDB = new String[500][10];
+    public static String[][] datiDB = new String[500][11];
     
     
     /*
@@ -61,18 +62,19 @@ public class Scansionatore {
             //cerco i dati di intestazione
             while (in.hasNextLine()) {
                 line = in.nextLine();
-                System.out.println("ciao1");
                 if (line.contains(id20)){
-                    System.out.println("ciao2");
                     line = in.nextLine();
                     Scanner riga = new Scanner(line);
-                    //memorizzo il campo 
-                    String bim = riga.next();
-                    String anno = riga.next();
-                    String nFatt = riga.next();
-                    System.out.println("ciao3");
-                }
+                    String bim = riga.next();                   //bimestre
+                    String anno = riga.next().replace(":","");  //anno
+                    line = in.nextLine();
+                    riga = new Scanner(line);
+                    riga.next();riga.next();
+                    String nFatt = riga.next();                 //n. fattura
+                    System.out.println(bim+anno+nFatt);
+                
                 break;
+                }
             }
             
 
@@ -121,7 +123,8 @@ public class Scansionatore {
       
                      
                     n_row++;
-                    n_FCIVA=6; // punatore per i fuori campo iva
+                    val_FCIVA=0;    //valore somma di tutti i FCIVA relativi ad un numero
+                    n_FCIVA=true;   //controllo di FCIVA multipli
 
                 } else if (line.contains(id1)){
                     outputStream.println("id1 "+line);
@@ -173,9 +176,18 @@ public class Scansionatore {
                     }
                     //System.out.println(a);
 
-                    importiFatt[n_row-1][n_FCIVA]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 12 in su
-
-                    n_FCIVA++;
+                    importiFatt[n_row-1][5]=a.replace(".","").replace(",",".");   // il fuori F.C.IVA occupa i campi dal 12 in su
+                    
+                    // sommo i F.C.IVA multipli
+                    if (n_FCIVA){
+                        val_FCIVA = Float.parseFloat(importiFatt[n_row-1][5]);
+                    } else {
+                        val_FCIVA = val_FCIVA + Float.parseFloat(importiFatt[n_row-1][5]);
+                        importiFatt[n_row-1][5]=Float.toString(val_FCIVA);
+                        System.out.println("FCIVA : "+val_FCIVA+" "+importiFatt[n_row-1][5]);
+                    }
+                    
+                    n_FCIVA=false;
                 }                  
             
             line = in.nextLine();
