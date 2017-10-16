@@ -59,27 +59,34 @@ public class Excel {
                 //HSSFWorkbook wb = new HSSFWorkbook();
                 XSSFWorkbook wb = new XSSFWorkbook();
                 XSSFSheet sheet1 = wb.createSheet("Foglio 1");
-
                 
+                // stile titolo
+                XSSFCellStyle csTitolo = wb.createCellStyle();      // creo un CellStyle                        
+                XSSFFont f = wb.createFont();                       // creo fun Font
+                f.setFontHeightInPoints((short) 12);                // setto la dimensione del font
+                f.setColor( (short)0x0 );                           // imposto il colore del font
+                f.setBold(true);                                    // grassetto
+                csTitolo.setFont(f);                                // assegno al CellStyle il font
+                csTitolo.setFillForegroundColor(new XSSFColor(Color.green));
+                csTitolo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                //Stile riga errore
+                XSSFCellStyle csErrore = wb.createCellStyle();
+                csErrore.setFillForegroundColor(new XSSFColor(Color.red));
+                csErrore.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                 
                 
                 for (rownum = (short) 0; rownum < (Scansionatore.n_row) ; rownum++) { 
 
                     XSSFRow r = sheet1.createRow(rownum);               // creo una riga
                     
-                    for (short cellnum = (short) 0; cellnum < 17; cellnum += 1) {                          
+                    for (short cellnum = (short) 0; cellnum < 17; cellnum += 1) {  
+                        
                         XSSFCell cell = r.createCell(cellnum);             // creo la cella
+                        
                         if (rownum==0){
-                            XSSFCellStyle cs = wb.createCellStyle();    // creo un CellStyle                        
-                            XSSFFont f = wb.createFont();               // creo fun Font
-                            f.setFontHeightInPoints((short) 12);    // setto la dimensione del font
-                            f.setColor( (short)0x0 );               // imposto il colore del font
-                            f.setBold(true);                        // grassetto
-                            cs.setFont(f);                          // assegno al CellStyle il font
-                            //cs.setFillBackgroundColor(new XSSFColor(Color.cyan));
-                            cs.setFillForegroundColor(new XSSFColor(Color.green));
-                            cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                            cell.setCellStyle(cs);                     // assegno alla cella lo stile
+
+                            cell.setCellStyle(csTitolo);                     // assegno alla cella lo stile
                             cell.setCellValue(data[rownum][cellnum]);  // inserisco i valori
 
                         } else {
@@ -97,7 +104,11 @@ public class Excel {
                                 cell.setCellValue(tot);
                                 
                             } else {
-                                 cell.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
+                                if ((cellnum==13 || cellnum==14 || cellnum==16) && data[rownum][cellnum].equals("")){
+                                    cell.setCellStyle(csErrore);
+                                    cell.setCellValue("Dato mancante");
+                                }
+                                cell.setCellValue(data[rownum][cellnum]);  // salvo il campo come stringa
                             }        
                         } 
                     }

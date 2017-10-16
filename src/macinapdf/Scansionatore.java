@@ -226,7 +226,9 @@ public class Scansionatore {
     data[0][15]=id15;
     data[0][16]=id16;
 
-    
+    //elimino i files di appoggio
+    ManipolaFile.eliminaFile(nomeFile+".txt");
+    ManipolaFile.eliminaFile(nomeFile+"-elab1.txt");
 
     return data;
 

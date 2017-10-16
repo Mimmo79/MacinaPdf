@@ -33,6 +33,7 @@ public class MacinaPdf {
         PrintWriter outputStream = new PrintWriter(new FileWriter(Main.nomeFile+".txt"));
         outputStream.println(stripper.getText(inputDoc));            // salvo lo strippo in un .txt
         outputStream.close();
+        inputDoc.close();
 
         } catch(IOException e){
             JOptionPane.showMessageDialog(null,"Scansionatore.scansiona ** "+e);

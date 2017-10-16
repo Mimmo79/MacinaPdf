@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    static String fileParam="C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf---C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
+    static String fileParam="C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf\\parametri";//C:\\Users\\Massi\\XAMPP\\htdocs\\MacinaPdf\\src\\macinapdf---C:\\Users\\senma\\Documents\\NetBeansProjects\\MacinaPdf\\src\\macinapdf
    
     public static String nomeFile;
     public static String dbUrl;
@@ -77,7 +77,7 @@ public class Main {
 
         //converto il file in .txt
         MacinaPdf.macina(nomeFile);
-        String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il pdf ed estraggo i dati in un array, estraggo i dati e li salvo in un array bidimensionale
+        String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il .txt ed estraggo i dati in un array
         Excel.compilaExcel(data);                                           //passo l'array ad un methodo per la scrittura su un file excel
 
        
