@@ -128,7 +128,6 @@ public class Scansionatore {
                         }
                     }
                     
-                    
                     n_row++;        //contatore linee array
                     val_FCIVA=0;    //valore somma di tutti i FCIVA relativi ad un numero
                     n_FCIVA=true;   //controllo di FCIVA multipli
