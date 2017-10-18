@@ -38,3 +38,9 @@ SELECT b.id,b.n_linea,a.cap_spesa
 FROM fisso_cap_spesa AS a 
 INNER JOIN fisso_dati_linee AS b 
 ON a.id=b.cap_spesa
+
+
+sostituzione di parole
+----------------------
+UPDATE fisso_rubrica_dati 
+SET indirizzo = replace(indirizzo,"via","Via")
