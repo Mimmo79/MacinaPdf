@@ -32,15 +32,22 @@ SET cap_spesa_id = (    SELECT fisso_cap_spesa.id
 			WHERE fisso_cap_spesa.cap_spesa=fisso_dati_linee.cap_spesa)
 
 
-unione di due tabelle con campo chiave esterna
+unione di due tabelle con campo comune
 ----------------------------------------------
 SELECT b.id,b.n_linea,a.cap_spesa 
 FROM fisso_cap_spesa AS a 
 INNER JOIN fisso_dati_linee AS b 
 ON a.id=b.cap_spesa
 
+SELECT a.n_linea,a.cap_spesa,b.n_linea,b.indirizzo,b.sede,b.profilo 
+FROM fisso_dati_linee AS a 
+LEFT JOIN fisso_rubrica_dati AS b 
+ON a.n_linea=CONCAT ('0543',b.n_linea)
+
 
 sostituzione di parole
 ----------------------
 UPDATE fisso_rubrica_dati 
 SET indirizzo = replace(indirizzo,"via","Via")
+
+
