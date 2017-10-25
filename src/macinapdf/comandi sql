@@ -51,3 +51,9 @@ UPDATE fisso_rubrica_dati
 SET indirizzo = replace(indirizzo,"via","Via")
 
 
+
+(SELECT b.n_linea,a.indirizzo, a.n_linea
+FROM fisso_indirizzi_adsl_giuli AS a 
+JOIN fisso_dati_linee AS b 
+ON CONCAT ('0543',a.n_linea)=b.n_linea)
+
