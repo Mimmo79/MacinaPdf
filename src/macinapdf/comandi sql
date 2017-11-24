@@ -42,7 +42,7 @@ ON a.id=b.cap_spesa
 SELECT a.n_linea,a.cap_spesa,b.n_linea,b.indirizzo,b.sede,b.profilo 
 FROM fisso_dati_linee AS a 
 LEFT JOIN fisso_rubrica_dati AS b 
-ON a.n_linea=CONCAT ('0543',b.n_linea)
+ON a.n_linea=CONCAT ('0543',b.n_linea) /*con funzione di concatenazione di stringhe*/
 
 
 sostituzione di parole
@@ -50,10 +50,17 @@ sostituzione di parole
 UPDATE fisso_rubrica_dati 
 SET indirizzo = replace(indirizzo,"via","Via")
 
-
-
 (SELECT b.n_linea,a.indirizzo, a.n_linea
 FROM fisso_indirizzi_adsl_giuli AS a 
 JOIN fisso_dati_linee AS b 
 ON CONCAT ('0543',a.n_linea)=b.n_linea)
+
+
+creare una view
+----------------
+CREATE OR REPLACE VIEW temp AS
+SELECT b.id,a.n_linea,a.indirizzo
+FROM fisso_indirizzi_adsl_giuli AS a 
+JOIN fisso_indirizzi AS b 
+ON a.indirizzo=b.indirizzo
 
