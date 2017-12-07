@@ -12,8 +12,9 @@ jdbc:mysql://localhost:3306
 OPERAZIONI SU DB
 --------------------------
 dbName              =   telefonia
-tab                 =   fisso_fatture_riepilogo
-nome_campo_linea    =   n_linea
+tab_linee           =   fisso_linee
+tab_fatture         =   fisso_fatturazioni
+nome_campo_linea    =   NLinea
 
 
 

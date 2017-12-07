@@ -113,20 +113,7 @@ public class Scansionatore {
                     data[n_row][10] = anno;
                     data[n_row][11] = nFatt;
                     
-                    
-                    //dati DB
-                    if (Mysql.esisteRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num)) {
-                        data[n_row][12] = Mysql.recuperaRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num,"cap_spesa");
-                        data[n_row][13] = Mysql.recuperaRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num,"cdr");
-                        data[n_row][14] = Mysql.recuperaRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num,"cdg");
-                        data[n_row][15] = Mysql.recuperaRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num,"ril_iva");
-                        data[n_row][16] = Mysql.recuperaRecord(Main.dbName,Main.tab,Main.nome_campo_linea,Num,"impegno");
 
-                    } else {
-                        for (i=12; i<17; i++){      
-                            data[n_row][i] = "dato non presente";
-                        }
-                    }
                     
                     n_row++;        //contatore linee array
                     val_FCIVA=0;    //valore somma di tutti i FCIVA relativi ad un numero

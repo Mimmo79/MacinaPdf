@@ -26,7 +26,8 @@ public class Main {
     public static String dbUser;
     public static String dbPwd;
     public static String dbName;
-    public static String tab;
+    public static String tab_linee;
+    public static String tab_fatture;
     public static String nome_campo_linea;
    
     
@@ -64,7 +65,8 @@ public class Main {
         dbUser = props.getProperty("dbUser");
         dbPwd = props.getProperty("dbPwd");
         nomeFile = props.getProperty("nomeFile");
-        tab = props.getProperty("tab");
+        tab_linee = props.getProperty("tab_linee");
+        tab_fatture = props.getProperty("tab_fatture");
         nome_campo_linea = props.getProperty("nome_campo_linea");
         
     }
@@ -76,9 +78,12 @@ public class Main {
         getParameters();                                                    //carico i parametri     
         MacinaPdf.macina(nomeFile);                                         //converto il file in .txt
         String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il .txt ed estraggo i dati in un array
-        Excel.compilaExcel(data);                                           //passo l'array ad un metodo per la scrittura su un file excel           
-        ManipolaFile.eliminaFile(nomeFile+".txt");                          //elimino i file di appoggio
-        ManipolaFile.eliminaFile(nomeFile+"-elab1.txt");
+        //Mysql.caricaFatturaSuDMBS(data);
+        Mysql.completaArrayConQuery(data);
+
+        //Excel.compilaExcel(data);                                           //passo l'array ad un metodo per la scrittura su un file excel           
+        //ManipolaFile.eliminaFile(nomeFile+".txt");                          //elimino i file di appoggio
+        //ManipolaFile.eliminaFile(nomeFile+"-elab1.txt");
 
     } 
 }

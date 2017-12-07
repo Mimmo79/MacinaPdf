@@ -87,7 +87,7 @@ public class Excel {
                         if (rownum==0){
 
                             cell.setCellStyle(csTitolo);                     // assegno alla cella lo stile
-                            cell.setCellValue(data[rownum][cellnum]);  // inserisco i valori
+                            cell.setCellValue(data[rownum][cellnum]);        // inserisco i valori
 
                         } else {
                             if (cellnum==1 | cellnum==2 |
