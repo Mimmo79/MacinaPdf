@@ -30,7 +30,7 @@ public class Main {
     public static String nome_campo_linea;
    
     
-    public static void pullParameters(){
+    public static void getParameters(){
         Properties props = new Properties();
         FileInputStream in = null;
         try {
@@ -73,7 +73,7 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        pullParameters();                                                   //carico i parametri     
+        getParameters();                                                    //carico i parametri     
         MacinaPdf.macina(nomeFile);                                         //converto il file in .txt
         String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il .txt ed estraggo i dati in un array
         Excel.compilaExcel(data);                                           //passo l'array ad un metodo per la scrittura su un file excel           

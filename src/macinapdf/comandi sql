@@ -64,3 +64,18 @@ FROM fisso_indirizzi_adsl_giuli AS a
 JOIN fisso_indirizzi AS b 
 ON a.indirizzo=b.indirizzo
 
+update con select
+-----------------
+update fisso_linee_indirizzi_sedi as target
+left join 
+	(select 	B.IDindirizzo, D.IDsede						
+		from fisso_indirizzi_adsl_giuli as A
+		left join fisso_indirizzi as B
+			on A.indirizzo=B.Indirizzo
+		left join fisso_linee as C
+			on concat ('0543',A.n_linea)=C.NLinea
+		left join fisso_sedi as D
+			on A.sede=D.Sede) as source
+	on  target.`FK-IDindirizzo`=source.IDindirizzo
+set target.`FK-IDsede`=source.IDsede
+
