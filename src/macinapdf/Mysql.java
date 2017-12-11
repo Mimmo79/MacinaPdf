@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static macinapdf.Excel.rownum;
@@ -230,28 +231,30 @@ public class Mysql {
         int riga,colonna;
         String query="";
         Connection con = null;
-        Statement st = null;
+        PreparedStatement st = null;
         ResultSet rs = null;
         
-            if (Mysql.esisteRecord(Main.dbName,Main.tab_fatture,"Bim",data[1][9])){
-                System.out.println("Bimestre già caricato!!!");
-                return;
-            }
+        if (Mysql.esisteRecord(Main.dbName,Main.tab_fatture,"Bim",data[1][9]) && 
+            Mysql.esisteRecord(Main.dbName,Main.tab_fatture,"Anno",data[1][10])    ){
+            System.out.println("Almeno un record di questo bimestre è già stato caricato!!!");
+            return;
+        }
 
         try {
             
             con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
-            st = con.createStatement();
+            st = con.prepareStatement(query); //arrivato qui
 
-            for (riga=1; riga < (Scansionatore.n_row) ; riga++){
-                for (colonna=0; colonna < 11 ; colonna++){
-                    query=query+"INSERT INTO `telefonia`.`fisso_fatturazioni` "+
-                        "(`NLinea`, `Bim`, `Anno`, `Nfattura`, `TotaleContributiEAbbonamenti`, `TotaleTraffico`, `TotaleAltriAddebitiEAccrediti`, `Totale`)" +
-                        " VALUES ('054362661', '2', '2017', '0XFCCDDD', '25,2', '25,2', '25,2', '25,2');";
-                 }
+            for (riga=1; riga < 3 ; riga++){   //(riga=1; riga < (Scansionatore.n_row) ; riga++)
+                
+                    query=query+"INSERT INTO " + Main.dbName + "." + Main.tab_fatture + 
+                        " (             NLinea,             Bim,                Anno,                   Nfattura,           TotaleContributiEAbbonamenti,   TotaleTraffico,     TotaleAltriAddebitiEAccrediti,  Totale)" +
+                        " VALUES ( '"+  data[riga][0]+"','"+data[riga][9]+"','"+data[riga][10]+"','"+   data[riga][11]+"',"+data[riga][1]+","+              data[riga][2]+","+  data[riga][3]+","+              data[riga][5]+"); ";
+               
+                
             }
             
-            
+            System.out.println(query);
             st.executeUpdate(query);
             
             

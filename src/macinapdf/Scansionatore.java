@@ -70,7 +70,7 @@ public class Scansionatore {
                 if (line.contains(id20)){
                     line = in.nextLine();
                     Scanner riga = new Scanner(line);
-                    bim = riga.next();                   //bimestre
+                    bim = riga.next().substring(0, 1);                   //bimestre
                     anno = riga.next().replace(":","");  //anno
                     line = in.nextLine();
                     riga = new Scanner(line);
