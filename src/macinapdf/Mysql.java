@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static macinapdf.Excel.rownum;
 
 public class Mysql {
 
@@ -208,7 +207,7 @@ public class Mysql {
         String Num;
         for (riga=1; riga < (Scansionatore.n_row) ; riga++){
             Num=data[riga][0];
-            System.out.println(Num);
+            //System.out.println(Num);
             if (Mysql.esisteRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num)) {
                 data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
                 data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
@@ -227,38 +226,50 @@ public class Mysql {
         
     }
     
-    public static void caricaFatturaSuDMBS (String[][] data){
-        int riga,colonna;
-        String query="";
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+    public static void caricaFattureSuDMBS (String[][] data){
         
-        if (Mysql.esisteRecord(Main.dbName,Main.tab_fatture,"Bim",data[1][9]) && 
-            Mysql.esisteRecord(Main.dbName,Main.tab_fatture,"Anno",data[1][10])    ){
-            System.out.println("Almeno un record di questo bimestre è già stato caricato!!!");
-            return;
-        }
+        int riga;
+        String query=null;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
 
         try {
-            
+            //apro la connessione
             con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
-            st = con.prepareStatement(query); //arrivato qui
-
-            for (riga=1; riga < 3 ; riga++){   //(riga=1; riga < (Scansionatore.n_row) ; riga++)
-                
-                    query=query+"INSERT INTO " + Main.dbName + "." + Main.tab_fatture + 
-                        " (             NLinea,             Bim,                Anno,                   Nfattura,           TotaleContributiEAbbonamenti,   TotaleTraffico,     TotaleAltriAddebitiEAccrediti,  Totale)" +
-                        " VALUES ( '"+  data[riga][0]+"','"+data[riga][9]+"','"+data[riga][10]+"','"+   data[riga][11]+"',"+data[riga][1]+","+              data[riga][2]+","+  data[riga][3]+","+              data[riga][5]+"); ";
-               
+            //verifico che le fatture non siano già state caricate
+            query="select * from "+Main.dbName+"."+Main.tab_fatture+" where Bim="+data[1][9]+" and  Anno="+data[1][10]+" ;";               
+            pst = con.prepareStatement(query);
+            rs=pst.executeQuery();
+            if (rs.next()){
+                System.out.println("Almeno un record di questo bimestre è già stato caricato!!!");
+                return;
+            }
+            
+            
+            
+            query=null;
+            rs=null;
+            query="INSERT INTO " + Main.dbName + "." + Main.tab_fatture + 
+                " (             NLinea, Bim,    Anno,   Nfattura,   TotaleContributiEAbbonamenti,   TotaleTraffico, FCIva,  TotaleAltriAddebitiEAccrediti,  Totale)" +
+                " VALUES (      ?,      ?,      ?,      ?,          ?,                              ?,              ?,      ?,                              ?)";         
+            pst = con.prepareStatement(query);
+            
+            for (riga=1; riga < (Scansionatore.n_row) ; riga++){
+                pst.setString(1, data[riga][0]);
+                pst.setString(2, data[riga][9]);
+                pst.setString(3, data[riga][10]);
+                pst.setString(4, data[riga][11]);
+                pst.setString(5, data[riga][1]);
+                pst.setString(6, data[riga][2]);
+                pst.setString(7, data[riga][4]);
+                pst.setString(8, data[riga][3]);
+                pst.setString(9, data[riga][5]);
+     
+                pst.executeUpdate();
                 
             }
             
-            System.out.println(query);
-            st.executeUpdate(query);
-            
-            
-
         } catch (SQLException ex) {
         
             Logger lgr = Logger.getLogger(Mysql.class.getName());
@@ -271,8 +282,8 @@ public class Mysql {
                 if (rs != null)
                     rs.close();
                 
-                if (st != null)
-                    st.close();
+                if (pst != null)
+                    pst.close();
                             
                 if (con != null) 
                     con.close();
@@ -283,12 +294,6 @@ public class Mysql {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
-        
-        
-        
-        
-        
-
         
     }
     
