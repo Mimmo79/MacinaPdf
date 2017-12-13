@@ -26,7 +26,7 @@ public class Scansionatore {
     static String id3="TOTALE ALTRI ADDEBITI E ACCREDITI";
     static String id4="F.C.IVA";
     static String id5="TOTALE";
-    static String id6="Imponibile";
+    static String id6="Imponibile (TOTALE - F.C.IVA)";
     static String id7="IVA";
     static String id8="TOTALE";
     static String id9="Bimestre";
