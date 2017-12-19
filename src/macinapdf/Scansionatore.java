@@ -52,7 +52,7 @@ public class Scansionatore {
     /*
     formato dell'array risultato
     La prima riga contiene l'intestazione
-    [id0][id1][id1][id2][id3][id4][id5/6][id7]...
+    [id0][id1][id2][id3][id4][id5][id6]...
     */
     
     public static String[][] scansiona(String nomeFile) {

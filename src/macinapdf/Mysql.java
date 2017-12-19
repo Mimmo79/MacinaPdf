@@ -209,12 +209,11 @@ public class Mysql {
             Num=data[riga][0];
             //System.out.println(Num);
             if (Mysql.esisteRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num)) {
-                data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
-                data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
-                data[riga][14] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdg");
-                data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
-                data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");
-
+                    data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
+                    data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
+                    data[riga][14] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdg");
+                    data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
+                    data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");       
             } else {
                 for (i=12; i<17; i++){      
                     data[riga][i] = "dato non presente";
@@ -294,6 +293,60 @@ public class Mysql {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+        
+    }
+    
+    
+    
+    public Connection con = null;
+    public Statement st = null;
+    public ResultSet rs = null;
+    public boolean result = false;
+    
+    public Mysql(String dbUrl, String dbUser, String dbPwd){
+        
+        try {
+        con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
+        st = con.createStatement();
+        
+        
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } 
+        
+        
+    }
+    public void executeQuery(String query){
+        try {
+            
+            this.rs = this.st.executeQuery(query);
+            this.result = this.rs.next();
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        }
+    }
+    public void closeCon(){
+        try {       
+                if (this.rs != null)
+                    this.rs.close();            
+            
+                if (this.st != null)
+                    this.st.close();
+                
+                if (this.con != null) 
+                    this.con.close();
+                              
+            } catch (SQLException ex) {
+                
+                Logger lgr = Logger.getLogger(Mysql.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
         
     }
     
