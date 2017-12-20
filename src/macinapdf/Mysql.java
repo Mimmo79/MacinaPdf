@@ -210,14 +210,13 @@ public class Mysql {
             //System.out.println(Num);
             if (Mysql.esisteRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num)) {
                     data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
+                    if (data[riga][12].equalsIgnoreCase(""))System.out.println(data[riga][12]);
                     data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
                     data[riga][14] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdg");
                     data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
                     data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");       
-            } else {
-                for (i=12; i<17; i++){      
-                    data[riga][i] = "dato non presente";
-                }
+            } else {                
+                data[riga][12] = "Linea non presente nel DB";              
             }             
         }
         
