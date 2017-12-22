@@ -80,7 +80,7 @@ public class Excel {
 
                     XSSFRow r = sheet1.createRow(rownum);               // creo una riga
                     
-                    for (short cellnum = (short) 0; cellnum < 17; cellnum += 1) {  
+                    for (short cellnum = (short) 0; cellnum < 19; cellnum += 1) {  
                         
                         XSSFCell cell = r.createCell(cellnum);             // creo la cella
                         

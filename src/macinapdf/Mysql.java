@@ -145,7 +145,52 @@ public class Mysql {
         return result;
         
     }
+    public static String queryRecuperaRecord (String db, String tabella, String campo, String record_ricercato, String campo_recupero){
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        String result = null;
+
+        try {
+            
+            con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
+            st = con.createStatement();
+            rs = st.executeQuery("select * from "+db+"."+tabella+" where "+campo+"="+record_ricercato+"");
+            if (rs.next()){
+                result=rs.getString(campo_recupero);
+            }
+            
+            
+
+        } catch (SQLException ex) {
         
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            
+            try {
+                
+                if (rs != null)
+                    rs.close();
+                
+                if (st != null)
+                    st.close();
+                            
+                if (con != null) 
+                    con.close();
+                              
+            } catch (SQLException ex) {
+                
+                Logger lgr = Logger.getLogger(Mysql.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
+        return result;
+        
+    }    
+
     public static String recuperaRecordJoin (String db, String tabellaA, String tabellaB, String campo, String record_ricercato, String campo_recupero){
         Connection con = null;
         Statement st = null;
@@ -205,21 +250,41 @@ public class Mysql {
     public static String[][] completaArrayConQuery (String[][] data){
         int riga,i;
         String Num;
+        Mysql oggettoMysql = new Mysql(Main.dbUrl, Main.dbUser, Main.dbPwd);
+        
         for (riga=1; riga < (Scansionatore.n_row) ; riga++){
             Num=data[riga][0];
             //System.out.println(Num);
             if (Mysql.esisteRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num)) {
                     data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
-                    if (data[riga][12].equalsIgnoreCase(""))System.out.println(data[riga][12]);
+                    if (data[riga][12]==null || data[riga][12].equals(""))
+                        data[riga][12]="CapSpesa non presente";
                     data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
                     data[riga][14] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdg");
                     data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
-                    data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");       
+                    data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");
+                
+                    
+                    String queryTemp=  " select * " +
+                                " from "+Main.dbName+".fisso_linee a " +
+                                " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
+                                " on a.IDLinea=b.`FK-IDlinea` " +
+                                " where b.Cessazione=1 and a.NLinea='"+ Num +"' ";
+                    
+                    if (oggettoMysql.executeQueryBoolean(queryTemp))
+                        queryTemp =  " select b.Nota " +
+                                        " from "+Main.dbName+".fisso_linee a " +
+                                        " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
+                                        " on a.IDLinea=b.`FK-IDlinea` " +
+                                        " where a.NLinea='"+ Num +"'";
+                        oggettoMysql.executeQueryRecupera(queryTemp, "Nota");
+                    
+                        data[riga][18]="cessata "+oggettoMysql.result;
             } else {                
                 data[riga][12] = "Linea non presente nel DB";              
             }             
         }
-        
+        oggettoMysql.closeCon();
         return data;
         
     }
@@ -300,7 +365,7 @@ public class Mysql {
     public Connection con = null;
     public Statement st = null;
     public ResultSet rs = null;
-    public boolean result = false;
+    public String result = null;
     
     public Mysql(String dbUrl, String dbUser, String dbPwd){
         
@@ -318,11 +383,28 @@ public class Mysql {
         
         
     }
-    public void executeQuery(String query){
+    public Boolean executeQueryBoolean(String query){
+        Boolean a=false;
         try {
             
             this.rs = this.st.executeQuery(query);
-            this.result = this.rs.next();
+            a = this.rs.next();
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        }
+        return a;
+    }
+    public void executeQueryRecupera(String query, String campo_recupero){
+        try {
+            
+            this.rs = this.st.executeQuery(query);
+            if (this.rs.next()){
+                result=rs.getString(campo_recupero);
+            }
+ 
         } catch (SQLException ex) {
         
             Logger lgr = Logger.getLogger(Mysql.class.getName());
@@ -330,6 +412,9 @@ public class Mysql {
 
         }
     }
+
+    
+    
     public void closeCon(){
         try {       
                 if (this.rs != null)

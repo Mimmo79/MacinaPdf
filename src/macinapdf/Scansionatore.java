@@ -37,6 +37,8 @@ public class Scansionatore {
     static String id14="CdG";
     static String id15="RIL. IVA";
     static String id16="IMPEGNO";
+    static String id17="Sede";
+    static String id18="Note";
 
     
     public static String id20="Fattura bimestrale";
@@ -211,6 +213,7 @@ public class Scansionatore {
     data[0][14]=id14;
     data[0][15]=id15;
     data[0][16]=id16;
+    data[0][17]=id17;
 
 
 
