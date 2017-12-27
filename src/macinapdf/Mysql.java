@@ -264,14 +264,28 @@ public class Mysql {
                     data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
                     data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");
                 
+                    //recupero il campo "Sede"
+                    String queryTemp=null;
+                    queryTemp=  " select C.Sede " +
+                                " from "+Main.dbName+".fisso_linee A " +
+                                " left join "+Main.dbName+".fisso_linee_indirizzi_sedi B " +
+                                "       on A.IDLinea=B.`FK-IDlinea` " +
+                                " left join "+Main.dbName+".fisso_sedi C " +
+                                "	on B.`FK-IDsede`=C.IDsede" +
+                                " where A.NLinea='"+ Num +"' ";
+                    oggettoMysql.executeQueryRecupera(queryTemp,"Sede");
+                    data[riga][17]=oggettoMysql.result;
+                                                                             
                     
-                    String queryTemp=  " select * " +
+                    //query per verifica linea cessata
+                    queryTemp=  " select * " +
                                 " from "+Main.dbName+".fisso_linee a " +
                                 " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
                                 " on a.IDLinea=b.`FK-IDlinea` " +
                                 " where b.Cessazione=1 and a.NLinea='"+ Num +"' ";
                     
-                    if (oggettoMysql.executeQueryBoolean(queryTemp))
+                    if (oggettoMysql.executeQueryBoolean(queryTemp)){
+                        //recupero campo "Nota"
                         queryTemp =  " select b.Nota " +
                                         " from "+Main.dbName+".fisso_linee a " +
                                         " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
@@ -280,6 +294,88 @@ public class Mysql {
                         oggettoMysql.executeQueryRecupera(queryTemp, "Nota");
                     
                         data[riga][18]="cessata "+oggettoMysql.result;
+                    } else {
+                        data[riga][18]="";
+                    } 
+            } else {                
+                data[riga][12] = "Linea non presente nel DB";              
+            }             
+        }
+        oggettoMysql.closeCon();
+        return data;
+        
+    }
+    public static String[][] completaArrayConQueryBIs (String[][] data){
+        int riga,i;
+        String Num;
+        Mysql oggettoMysql = new Mysql(Main.dbUrl, Main.dbUser, Main.dbPwd);
+        String queryTemp=null;
+        queryTemp=  " select    A.CapSpesa, A.Cdr, A.Cdg, A.Ril_iva, A.Impegno, " +
+                    "		B.Cessazione, B.Nota, " +
+                    "		C.Sede " +
+                    " from      "+Main.dbName+".fisso_linee A " +
+                    " left join "+Main.dbName+".fisso_linee_indirizzi_sedi B " +
+                    "       on A.IDLinea=B.`FK-IDlinea` " +
+                    " left join "+Main.dbName+".fisso_sedi C " +
+                    "	on B.`FK-IDsede`=C.IDsede";
+        
+                    
+            pst = con.prepareStatement("SELECT * FROM Authors");
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                
+                System.out.print(rs.getInt(1));
+                System.out.print(": ");
+                System.out.println(rs.getString(2));
+            }
+        
+        
+        for (riga=1; riga < (Scansionatore.n_row) ; riga++){
+            Num=data[riga][0];
+            //System.out.println(Num);
+            if (Mysql.esisteRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num)) {
+                    data[riga][12] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"CapSpesa");
+                    if (data[riga][12]==null || data[riga][12].equals(""))
+                        data[riga][12]="CapSpesa non presente";
+                    data[riga][13] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdr");
+                    data[riga][14] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Cdg");
+                    data[riga][15] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Ril_iva");
+                    data[riga][16] = Mysql.recuperaRecord(Main.dbName,Main.tab_linee,Main.nome_campo_linea,Num,"Impegno");
+                
+                    //recupero il campo "Sede"
+                    String queryTemp=null;
+                    queryTemp=  " select C.Sede " +
+                                " from "+Main.dbName+".fisso_linee A " +
+                                " left join "+Main.dbName+".fisso_linee_indirizzi_sedi B " +
+                                "       on A.IDLinea=B.`FK-IDlinea` " +
+                                " left join "+Main.dbName+".fisso_sedi C " +
+                                "	on B.`FK-IDsede`=C.IDsede" +
+                                " where A.NLinea='"+ Num +"' ";
+                    oggettoMysql.executeQueryRecupera(queryTemp,"Sede");
+                    data[riga][17]=oggettoMysql.result;
+                                                                             
+                    
+                    //query per verifica linea cessata
+                    queryTemp=  " select * " +
+                                " from "+Main.dbName+".fisso_linee a " +
+                                " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
+                                " on a.IDLinea=b.`FK-IDlinea` " +
+                                " where b.Cessazione=1 and a.NLinea='"+ Num +"' ";
+                    
+                    if (oggettoMysql.executeQueryBoolean(queryTemp)){
+                        //recupero campo "Nota"
+                        queryTemp =  " select b.Nota " +
+                                        " from "+Main.dbName+".fisso_linee a " +
+                                        " join "+Main.dbName+".fisso_linee_indirizzi_sedi b " +
+                                        " on a.IDLinea=b.`FK-IDlinea` " +
+                                        " where a.NLinea='"+ Num +"'";
+                        oggettoMysql.executeQueryRecupera(queryTemp, "Nota");
+                    
+                        data[riga][18]="cessata "+oggettoMysql.result;
+                    } else {
+                        data[riga][18]="";
+                    } 
             } else {                
                 data[riga][12] = "Linea non presente nel DB";              
             }             
@@ -364,13 +460,14 @@ public class Mysql {
     
     public Connection con = null;
     public Statement st = null;
+    public Statement pst = null;
     public ResultSet rs = null;
     public String result = null;
     
     public Mysql(String dbUrl, String dbUser, String dbPwd){
         
         try {
-        con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
+        con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);      
         st = con.createStatement();
         
         
@@ -400,6 +497,7 @@ public class Mysql {
     public void executeQueryRecupera(String query, String campo_recupero){
         try {
             
+            
             this.rs = this.st.executeQuery(query);
             if (this.rs.next()){
                 result=rs.getString(campo_recupero);
@@ -412,7 +510,22 @@ public class Mysql {
 
         }
     }
+    public void executeQueryRecuperaMulti(String query){
+        try {
+            
+            pst=this.con.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (this.rs.next()){
+                result=rs.getString(campo_recupero);
+            }
+ 
+        } catch (SQLException ex) {
+        
+            Logger lgr = Logger.getLogger(Mysql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
 
+        }
+    }
     
     
     public void closeCon(){
