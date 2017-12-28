@@ -29,6 +29,8 @@ public class Main {
     public static String tab_linee;
     public static String tab_fatture;
     public static String nome_campo_linea;
+    public static int nRigheArrayData;
+    public static int nColonneArrayData;
    
     
     public static void getParameters(){
@@ -68,6 +70,8 @@ public class Main {
         tab_linee = props.getProperty("tab_linee");
         tab_fatture = props.getProperty("tab_fatture");
         nome_campo_linea = props.getProperty("nome_campo_linea");
+        nRigheArrayData = Integer.parseInt(props.getProperty("nRigheArrayData"));
+        nColonneArrayData = Integer.parseInt(props.getProperty("nColonneArrayData"));
         
     }
     

@@ -48,7 +48,7 @@ public class Scansionatore {
     static int n_row=1;  // nella prima riga ci sono le intestazioni
     static boolean n_FCIVA=true;
     static float val_FCIVA=0;
-    static String[][] data = new String[500][20];
+    static String[][] data = new String[Main.nRigheArrayData][Main.nColonneArrayData];
     
     
     /*
