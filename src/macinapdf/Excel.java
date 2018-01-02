@@ -49,7 +49,10 @@ public class Excel {
     static double tot=0;
 
     
-    
+    /**
+     * Crea un file .xlsx completo di tutti i dati
+     * @param data array dei dati
+     */
     public static void compilaExcel(String [][] data) {
         
         try {

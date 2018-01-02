@@ -21,10 +21,14 @@ import javax.swing.JOptionPane;
 
 public class MacinaPdf {
 
-    
+    /**
+     * Questo metodo trasforma il documento .pdf in un file pdf contenente 
+     * tutto il testo del file originale senza formattazione
+     * 
+     * @param nomeFile è il nome del file .pdf da elaborare
+     */
     public static void macina(String nomeFile){
-        
-        
+ 
         try {       
         //converto il file in .txt
         File file = new File(nomeFile+".pdf");                       // apro il file .pdf

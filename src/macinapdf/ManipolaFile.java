@@ -19,8 +19,10 @@ public class ManipolaFile {
 
     
 
-    //cancella il file passato come paramentro stringa
-     public static void eliminaFile (String fileDaEliminare){
+    /**
+    * Cancella il file passato come paramentro stringa
+    */
+    public static void eliminaFile (String fileDaEliminare){
         File daEliminare = new File(fileDaEliminare); //Referenzia oggetto file da percorso
         if(daEliminare.exists()) { //se esiste...
                 if(daEliminare.delete()) //prova a eliminarlo...

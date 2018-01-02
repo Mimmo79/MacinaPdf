@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
  * @author massi
  */
 
+
 public class Scansionatore {
     
     static String line = null;
@@ -51,10 +52,15 @@ public class Scansionatore {
     static String[][] data = new String[Main.nRigheArrayData][Main.nColonneArrayData];
     
     
-    /*
-    formato dell'array risultato
-    La prima riga contiene l'intestazione
-    [id0][id1][id2][id3][id4][id5][id6]...
+    /**
+    * Questo metodo compila un array "data" estrapolando i dati dalla fattura multipla.
+    * 
+    * La prima riga contiene l'intestazione
+    * [id0][id1][id2][id3][id4][id5][id6]...
+    * 
+    * @author Massi
+    * @param nomeFile nome del file(senza estensione)da elaborare
+    * @return array contenente i dati estrapolati.
     */
     
     public static String[][] scansiona(String nomeFile) {
@@ -72,17 +78,16 @@ public class Scansionatore {
                 if (line.contains(id20)){
                     line = in.nextLine();
                     Scanner riga = new Scanner(line);
-                    bim = riga.next().substring(0, 1);                   //bimestre
-                    anno = riga.next().replace(":","");  //anno
+                    bim = riga.next().substring(0, 1);      //bimestre
+                    anno = riga.next().replace(":","");     //anno
                     line = in.nextLine();
                     riga = new Scanner(line);
                     riga.next();riga.next();
-                    nFatt = riga.next();                 //n. fattura
+                    nFatt = riga.next();                    //n. fattura
                 
                 break;
                 }
             }
-            
 
             //salto la prima parte del documento
             while (in.hasNextLine()) {
@@ -126,9 +131,9 @@ public class Scansionatore {
                     
                     Scanner riga = new Scanner(line);
                     riga.next(); riga.next(); riga.next(); riga.next();
-                    String Tot_Con = riga.next();
+                    String Tot_ConAbb = riga.next();
                     //System.out.println(Tot_Con);
-                    data[n_row-1][1]=Tot_Con.replace(".","").replace(",",".");  //il primo elimina i punti, il secondo converte le virgole in punti
+                    data[n_row-1][1]=Tot_ConAbb.replace(".","").replace(",",".");  //il primo elimina i punti, il secondo converte le virgole in punti
 
                     
                 } else if (line.contains(id2)){

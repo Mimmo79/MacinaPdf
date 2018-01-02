@@ -32,7 +32,9 @@ public class Main {
     public static int nRigheArrayData;
     public static int nColonneArrayData;
    
-    
+    /**
+     * Carica i parametri da file 
+     */
     public static void getParameters(){
         Properties props = new Properties();
         FileInputStream in = null;
@@ -78,7 +80,6 @@ public class Main {
     
     
     public static void main(String[] args) throws Exception {
-        
         getParameters();                                                    //carico i parametri     
         MacinaPdf.macina(nomeFile);                                         //converto il file in .txt
         String data[][] = Scansionatore.scansiona(nomeFile);                //elaboro il .txt ed estraggo i dati in un array
@@ -87,6 +88,5 @@ public class Main {
         Excel.compilaExcel(data);                                           //passo l'array ad un metodo per la scrittura su un file excel           
         ManipolaFile.eliminaFile(nomeFile+".txt");                          //elimino i file di appoggio
         ManipolaFile.eliminaFile(nomeFile+"-elab1.txt");
-
     } 
 }

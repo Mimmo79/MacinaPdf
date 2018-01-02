@@ -146,6 +146,11 @@ public class Mysql {
         
     }
 
+    /**
+     * esegue una query per avere tutti i parametri di pagamento delle fatture
+     * @param data
+     * @return l'array completo dei dati mancanti
+     */    
     public static String[][] completaArrayConQuery (String[][] data){
         int riga,i;
         String Num;
@@ -186,6 +191,11 @@ public class Mysql {
         return data;      
     }
     
+    /**
+     * carica i dati su DBMS
+     * 
+     * @param data
+     */
     public static void caricaFattureSuDMBS (String[][] data){
         
         int riga;
