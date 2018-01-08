@@ -79,3 +79,12 @@ left join
 	on  target.`FK-IDindirizzo`=source.IDindirizzo
 set target.`FK-IDsede`=source.IDsede
 
+
+Impostare solo la prima lettera maiuscola un campo
+--------------------------------------------------
+select CONCAT(UPPER(LEFT(Sede,1)),LOWER(SUBSTRING(Sede, 2))) as Sede
+from fisso_sedi
+
+UPDATE fisso_sedi
+SET Sede=CONCAT(UPPER(LEFT(Sede,1)),LOWER(SUBSTRING(Sede, 2)))
+

@@ -164,7 +164,9 @@ public class Mysql {
                     " left join "+Main.dbName+".fisso_linee_indirizzi_sedi B " +
                     "       on A.IDLinea=B.`FK-IDlinea` " +
                     " left join "+Main.dbName+".fisso_sedi C " +
-                    "	on B.`FK-IDsede`=C.IDsede";
+                    "	on B.`FK-IDsede`=C.IDsede" +
+                    " ORDER BY NLinea, B.DataInserimento DESC"; // in presenza di più record legati alla linea
+                                                                // viene preso il più recente
 
         oggettoMysql.executeQueryRecuperaMulti(queryTemp, 9);           
         
@@ -181,7 +183,7 @@ public class Mysql {
                     data[riga][15] = arrayResult[i][4]; // Ril_iva
                     data[riga][16] = arrayResult[i][5]; // Impegno
                     data[riga][17] = arrayResult[i][8]; // Sede
-                    if (!(arrayResult[i][6]==null || arrayResult[i][6].equals("0"))) 
+                    if (!(arrayResult[i][6]==null || arrayResult[i][6].equals("0")))    // se diverso da null e 0
                         data[riga][18] = "Cessata. Nota:"+arrayResult[i][7]; // Nota
                 break;    
                 }                   
