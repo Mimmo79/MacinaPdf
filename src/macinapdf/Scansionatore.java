@@ -219,6 +219,7 @@ public class Scansionatore {
     data[0][15]=id15;
     data[0][16]=id16;
     data[0][17]=id17;
+    data[0][18]=id18;
 
 
 
