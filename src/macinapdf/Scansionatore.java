@@ -42,7 +42,9 @@ public class Scansionatore {
     static String id18="Note";
 
     
-    public static String id20="Fattura bimestrale";
+    public static String id20="Fattura periodo"; 
+    //vecchio id20="Fattura bimestrale"
+    //nuovo id20="Fattura periodo"
 
 
     
