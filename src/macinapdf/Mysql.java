@@ -157,7 +157,29 @@ public class Mysql {
         Mysql oggettoMysql = new Mysql(Main.dbUrl, Main.dbUser, Main.dbPwd);
         
         String queryTemp=null;
-        queryTemp=  " select    A.NLinea,A.CapSpesa, A.Cdr, A.Cdg, A.Ril_iva, A.Impegno, " +
+        queryTemp=  "select	A.NLinea,D.CapSpesa, D.Cdr, D.Cdg, D.Ril_iva, D.Impegno,	" +
+                    "		B.Cessazione, B.Nota,						" +
+                    "		C.Sede								" +
+
+                    "from ((("+Main.dbName+".fisso_linee A					" +
+                    "left join "+Main.dbName+".fisso_core B                    			" +
+                    "	on A.IDLinea=B.`FK-IDlinea`)                                            " +
+                    "left join "+Main.dbName+".fisso_sedi C					" +
+                    "	on B.`FK-IDsede`=C.IDsede)                                              " +
+                    "left join "+Main.dbName+".fisso_pagamenti D                                                " +
+                    "	on B.`FK-IDpagamenti`=D.IDPagamento)                                    " +
+
+                    "ORDER BY NLinea, B.DataInserimento DESC					" ;
+                             
+                // in presenza di più record legati alla linea
+                // viene preso il più recente
+                
+                
+                
+                
+                /*
+                
+                " select    A.NLinea,A.CapSpesa, A.Cdr, A.Cdg, A.Ril_iva, A.Impegno, " +
                     "		B.Cessazione, B.Nota, " +
                     "		C.Sede " +
                     " from      "+Main.dbName+".fisso_linee A " +
@@ -167,6 +189,7 @@ public class Mysql {
                     "	on B.`FK-IDsede`=C.IDsede" +
                     " ORDER BY NLinea, B.DataInserimento DESC"; // in presenza di più record legati alla linea
                                                                 // viene preso il più recente
+                */
 
         oggettoMysql.executeQueryRecuperaMulti(queryTemp, 9);           
         
