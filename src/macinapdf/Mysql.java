@@ -233,11 +233,13 @@ public class Mysql {
             //apro la connessione
             con = DriverManager.getConnection(Main.dbUrl, Main.dbUser, Main.dbPwd);
             //verifico che le fatture non siano già state caricate
-            query="select * from "+Main.dbName+"."+Main.tab_fatture+" where Bim="+data[1][9]+" and  Anno="+data[1][10]+" ;";               
+            query=    "select * "
+                    + "from "+Main.dbName+"."+Main.tab_fatture+" "
+                    + "where Bim='"+data[1][9]+"' and  Anno='"+data[1][10]+"' and Nfattura='"+data[1][11]+"' ;";
             pst = con.prepareStatement(query);
             rs=pst.executeQuery();
             if (rs.next()){
-                System.out.println("Almeno un record di questo bimestre è già stato caricato!!!");
+                System.out.println("Almeno un record di questo bim/anno/Nfattura è stato caricato!!!");
                 return;
             }
             
@@ -259,10 +261,9 @@ public class Mysql {
                 pst.setString(6, data[riga][2]);
                 pst.setString(7, data[riga][4]);
                 pst.setString(8, data[riga][3]);
-                pst.setString(9, data[riga][5]);
+                pst.setString(9, data[riga][5]);           
      
-                pst.executeUpdate();
-                
+                pst.executeUpdate();            
             }
             
         } catch (SQLException ex) {

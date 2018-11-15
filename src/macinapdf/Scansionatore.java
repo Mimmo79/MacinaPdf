@@ -82,12 +82,15 @@ public class Scansionatore {
                     Scanner riga = new Scanner(line);
                     bim = riga.next().substring(0, 1);      //bimestre
                     anno = riga.next().replace(":","");     //anno
+                    line = in.nextLine();                   //salto linee codice ufficio            
                     line = in.nextLine();
                     riga = new Scanner(line);
                     riga.next();riga.next();
                     nFatt = riga.next();                    //n. fattura
-                
-                break;
+                    System.out.println("bim anno nFatt");
+                    System.out.println(bim+"   "+anno+" "+nFatt);
+                    System.out.println("*****************************");
+                    break;
                 }
             }
 
