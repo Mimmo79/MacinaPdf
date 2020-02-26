@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class MacinaPdf {
 
     /**
-     * Questo metodo trasforma il documento .pdf in un file pdf contenente 
+     * Questo metodo trasforma il documento .pdf in un file txt contenente 
      * tutto il testo del file originale senza formattazione
      * 
      * @param nomeFile è il nome del file .pdf da elaborare

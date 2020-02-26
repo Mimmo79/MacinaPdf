@@ -1,0 +1,528 @@
+package macinapdf;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import java.io.*;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author massi
+ */
+
+
+public class Scansionatore_2019 {
+    
+    static String line = null;
+    static String bim,anno,nFatt;
+
+    // macro voci che identificano il tipo di linea
+    static String id0="Telefonia di base :";
+    static String id1="ISDN :";
+    static String id2="Linea Dati INTERCENT-ER";
+    
+    // sottovoci di spesa
+    static String id_1="Totale Spesa Fissa";
+    static String id_2="Totale Prodotti in Noleggio";
+    static String id_3="Totale Spesa Variabile";
+    
+
+    
+    //static String id1="TOTALE CONTRIBUTI E ABBONAMENTI";
+    //static String id2="TOTALE TRAFFICO";
+    //static String id3="TOTALE ALTRI ADDEBITI E ACCREDITI";
+    static String id4="F.C.IVA";
+    static String id5="TOTALE";
+    static String id6="Imponibile (TOTALE - F.C.IVA)";
+    static String id7="IVA";
+    static String id8="TOTALE IVATO";
+    static String id9="Bimestre";
+    static String id10="Anno";
+    static String id11="n_fattura";
+    static String id12="CAP SPESA";
+    static String id13="CdR";
+    static String id14="CdG";
+    static String id15="RIL. IVA";
+    static String id16="IMPEGNO";
+    static String id17="Sede";
+    static String id18="Note";
+
+    
+    public static String id20="Fattura periodo"; 
+    //vecchio id20="Fattura bimestrale"
+    //nuovo id20="Fattura periodo"
+
+
+    
+    static int n_row=1;  // nella prima riga ci sono le intestazioni
+    static String[][] data = new String[Main.nRigheArrayData][Main.nColonneArrayData];
+    
+    
+    /**
+    * Questo metodo compila un array "data" estrapolando i dati dalla fattura multipla.
+    * 
+    * La prima riga contiene l'intestazione
+    * [id0][id1][id2][id3][id4][id5][id6]...
+    * 
+    * @author Massi
+    * @param nomeFile nome del file(senza estensione)da elaborare
+    * @return array contenente i dati estrapolati.
+    */
+    
+    public static String[][] scansiona(String nomeFile) {
+
+        try {   
+            // apro il file .txt in lettura
+            BufferedReader inputStream = new BufferedReader( new FileReader(nomeFile+".txt"));
+            Scanner in = new Scanner(inputStream);
+            // apro il file -elab1.txt in cui riverso i dati elaborati
+            PrintWriter outputStream = new PrintWriter(new FileWriter(nomeFile+"-elab1.txt"));
+            
+            //cerco i dati di intestazione
+            while (in.hasNextLine()) {
+                line = in.nextLine();
+                if (line.contains(id20)){
+                    line = in.nextLine();
+                    Scanner riga = new Scanner(line);
+                    bim = riga.next().substring(0, 1);      //bimestre
+                    anno = riga.next().replace(":","");     //anno
+                    line = in.nextLine();                   //salto linee codice ufficio            
+                    riga = new Scanner(line);
+                    riga.next();riga.next();
+                    nFatt = riga.next();                    //n. fattura
+                    System.out.println("bim anno nFatt");
+                    System.out.println(bim+"   "+anno+" "+nFatt);
+                    System.out.println("*****************************");
+                    break;
+                }
+            }
+
+       
+        
+            // scansiono la parte in cui compaiono i report fattura
+            while (in.hasNextLine()) {
+                
+                // **************************
+                //"linea base"
+                // **************************
+                if (line.contains(id0)){
+                    outputStream.println(" ");
+                    outputStream.println("id0="+id0+"**"+line);
+
+                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
+                    int i;
+                    for (i=0; i<20; i++){
+                        data[n_row][i]="0";
+                    }                    
+                    // numero linea
+                    Scanner riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    riga.next(); riga.next();
+                    String Num = riga.next();
+                    data[n_row][0]=Num;
+                    System.out.println("");
+                    System.out.println(Num+" linea base");
+                    System.out.println("-------------");
+                    
+                    // prosegui fino a raggiungere il totale linea estraendo i dati voluti
+                    line = in.nextLine();                 
+                    while (!line.contains("Linea "+Num)){
+
+                        // Totale Spesa Fissa
+                        if (line.contains(id_1)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_fissa = riga.next();
+                            Tot_spesa_fissa=Tot_spesa_fissa.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot fissa "+Tot_spesa_fissa);
+                            data[n_row][1]=Tot_spesa_fissa;   
+                        }
+                        
+                        // Totale Prodotti in Noleggio
+                        if (line.contains(id_2)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next(); riga.next();
+                            String Tot_prod_nol = riga.next();
+                            Tot_prod_nol=Tot_prod_nol.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot nol "+Tot_prod_nol);
+                            data[n_row][2]=Tot_prod_nol;   
+                        }
+                        
+                        // Totale Spesa Variabile
+                        if (line.contains(id_3)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_var = riga.next();
+                            Tot_spesa_var=Tot_spesa_var.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot var "+Tot_spesa_var);
+                            data[n_row][3]=Tot_spesa_var;   
+                        }                        
+                        line = in.nextLine();               
+                        
+                    }
+                    
+                                        
+                    // Totale 
+                    riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    String Tot = riga.next();
+                    Tot=Tot.replace("€","").replace(".","").replace(",",".");
+                    System.out.println("Tot "+Tot);
+                    data[n_row][5]=Tot;  
+                    
+                    line = in.nextLine();
+                    
+                    
+                    // dati fattura
+                    data[n_row][9] = bim;
+                    data[n_row][10] = anno;
+                    data[n_row][11] = nFatt;
+
+                    
+                    n_row++;        //contatore linee array
+
+
+                    
+                // **************************
+                //"linea ISDN"
+                // **************************    
+                } else if (line.contains(id1)){
+                    outputStream.println(" ");
+                    outputStream.println("id1="+id1+"**"+line);
+
+                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
+                    int i;
+                    for (i=0; i<20; i++){
+                        data[n_row][i]="0";
+                    }                    
+                    // numero linea
+                    Scanner riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    String Num = riga.next();
+                    data[n_row][0]=Num;
+                    System.out.println("");
+                    System.out.println(Num+" ISDN");
+                    System.out.println("-------------");
+                    
+                    // prosegui fino a raggiungere il totale linea estraendo i dati voluti
+                    line = in.nextLine();                 
+                    while (!line.contains("Linea "+Num)){
+
+                        // Totale Spesa Fissa
+                        if (line.contains(id_1)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_fissa = riga.next();
+                            Tot_spesa_fissa=Tot_spesa_fissa.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot fissa "+Tot_spesa_fissa);
+                            data[n_row][1]=Tot_spesa_fissa;   
+                        }
+                        
+                        // Totale Prodotti in Noleggio
+                        if (line.contains(id_2)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next(); riga.next();
+                            String Tot_prod_nol = riga.next();
+                            Tot_prod_nol=Tot_prod_nol.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot nol "+Tot_prod_nol);
+                            data[n_row][2]=Tot_prod_nol;   
+                        }
+                        
+                        // Totale Spesa Variabile
+                        if (line.contains(id_3)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_var = riga.next();
+                            Tot_spesa_var=Tot_spesa_var.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot var "+Tot_spesa_var);
+                            data[n_row][3]=Tot_spesa_var;   
+                        }                        
+                        line = in.nextLine();               
+                        
+                    }
+                    
+                                        
+                    // Totale 
+                    riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    String Tot = riga.next();
+                    Tot=Tot.replace("€","").replace(".","").replace(",",".");
+                    System.out.println("Tot "+Tot);
+                    data[n_row][5]=Tot;  
+                    
+                    line = in.nextLine();
+                    
+                    
+                    // dati fattura
+                    data[n_row][9] = bim;
+                    data[n_row][10] = anno;
+                    data[n_row][11] = nFatt;
+
+                    
+                    n_row++;        //contatore linee array                    
+                    
+                    
+
+                    
+                    
+                    
+                // **************************
+                //"Linea Dati INTERCENT-ER"
+                // **************************    
+                } else if (line.contains(id2)){
+                    outputStream.println(" ");
+                    outputStream.println("id2="+id2+"**"+line);
+
+                    //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
+                    int i;
+                    for (i=0; i<20; i++){
+                        data[n_row][i]="0";
+                    }                    
+                    // numero linea
+                    Scanner riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    riga.next(); riga.next();
+                    riga.next();
+                    String Num = riga.next();
+                    data[n_row][0]=Num;
+                    System.out.println("");
+                    System.out.println(Num+" Dati");
+                    System.out.println("-------------");
+                    
+                    // prosegui fino a raggiungere il totale linea estraendo i dati voluti
+                    line = in.nextLine();                 
+                    while (!line.contains("Linea "+Num)){
+
+                        // Totale Spesa Fissa
+                        if (line.contains(id_1)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_fissa = riga.next();
+                            Tot_spesa_fissa=Tot_spesa_fissa.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot fissa "+Tot_spesa_fissa);
+                            data[n_row][1]=Tot_spesa_fissa;   
+                        }
+                        
+                        // Totale Prodotti in Noleggio
+                        if (line.contains(id_2)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next(); riga.next();
+                            String Tot_prod_nol = riga.next();
+                            Tot_prod_nol=Tot_prod_nol.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot nol "+Tot_prod_nol);
+                            data[n_row][2]=Tot_prod_nol;   
+                        }
+                        
+                        // Totale Spesa Variabile
+                        if (line.contains(id_3)){
+                            riga = new Scanner(line);
+                            riga.next(); riga.next();
+                            riga.next();
+                            String Tot_spesa_var = riga.next();
+                            Tot_spesa_var=Tot_spesa_var.replace("€","").replace(".","").replace(",",".");
+                            System.out.println("Tot var "+Tot_spesa_var);
+                            data[n_row][3]=Tot_spesa_var;   
+                        }                        
+                        line = in.nextLine();               
+                        
+                    }
+                    
+                                        
+                    // Totale 
+                    riga = new Scanner(line);
+                    riga.next(); riga.next();
+                    String Tot = riga.next();
+                    Tot=Tot.replace("€","").replace(".","").replace(",",".");
+                    System.out.println("Tot "+Tot);
+                    data[n_row][5]=Tot;  
+                    
+                    line = in.nextLine();
+                    
+                    
+                    // dati fattura
+                    data[n_row][9] = bim;
+                    data[n_row][10] = anno;
+                    data[n_row][11] = nFatt;
+
+                    
+                    n_row++;        //contatore linee array                    
+                    
+   
+                    
+                }
+            
+            line = in.nextLine();
+                
+            }
+            
+        outputStream.close();        
+        inputStream.close();
+        
+        } catch(IOException e){
+            JOptionPane.showMessageDialog(null,"Scansionatore.scansiona ** "+e);
+        }
+                
+    //intestazione
+    data[0][0]=id0;    
+    data[0][1]=id_1;
+    data[0][2]=id_2;    
+    data[0][3]=id_3;
+    data[0][4]=id4;
+    data[0][5]=id5;
+    data[0][6]=id6;
+    data[0][7]=id7;
+    data[0][8]=id8;
+    data[0][9]=id9;
+    data[0][10]=id10;
+    data[0][11]=id11;
+    data[0][12]=id12;
+    data[0][13]=id13;
+    data[0][14]=id14;
+    data[0][15]=id15;
+    data[0][16]=id16;
+    data[0][17]=id17;
+    data[0][18]=id18;
+    
+//    static String id0="Linea numero";
+//    static String id1="Totale Spesa Fissa";
+//    static String id2="Totale Prodotti in Noleggio";
+//    static String id3="Totale Spesa Variabile";
+//    static String id4="";
+//    static String id5="TOTALE";
+    
+    
+    
+//    static String id0="Linea numero";
+//    static String id1="TOTALE CONTRIBUTI E ABBONAMENTI";
+//    static String id2="TOTALE TRAFFICO";
+//    static String id3="TOTALE ALTRI ADDEBITI E ACCREDITI";
+//    static String id4="F.C.IVA";
+//    static String id5="TOTALE";
+//    static String id6="Imponibile (TOTALE - F.C.IVA)";
+//    static String id7="IVA";
+//    static String id8="TOTALE IVATO";
+//    static String id9="Bimestre";
+//    static String id10="Anno";
+//    static String id11="n_fattura";
+//    static String id12="CAP SPESA";
+//    static String id13="CdR";
+//    static String id14="CdG";
+//    static String id15="RIL. IVA";
+//    static String id16="IMPEGNO";
+//    static String id17="Sede";
+//    static String id18="Note";
+
+
+
+    return data;
+    
+    
+//    
+//        // **************************
+//        //"motodo scansionatore"
+//        // **************************    
+//        public static scan(String nomeFile){
+//            outputStream.println(" ");
+//            outputStream.println("id2="+id2+"**"+line);
+//
+//            //inizializzo le celle per evitare i valori null che danno errore con la conversione in numeri
+//            int i;
+//            for (i=0; i<20; i++){
+//                data[n_row][i]="0";
+//            }                    
+//            // numero linea
+//            Scanner riga = new Scanner(line);
+//            riga.next(); riga.next();
+//            riga.next(); riga.next();
+//            riga.next();
+//            String Num = riga.next();
+//            data[n_row][0]=Num;
+//            System.out.println("");
+//            System.out.println(Num+" Dati");
+//            System.out.println("-------------");
+//
+//            // prosegui fino a raggiungere il totale linea estraendo i dati voluti
+//            line = in.nextLine();                 
+//            while (!line.contains("Linea "+Num)){
+//
+//                // Totale Spesa Fissa
+//                if (line.contains(id_1)){
+//                    riga = new Scanner(line);
+//                    riga.next(); riga.next();
+//                    riga.next();
+//                    String Tot_spesa_fissa = riga.next();
+//                    System.out.println("Tot fissa "+Tot_spesa_fissa);
+//                    data[n_row][1]=Tot_spesa_fissa;   
+//                }
+//
+//                // Totale Prodotti in Noleggio
+//                if (line.contains(id_2)){
+//                    riga = new Scanner(line);
+//                    riga.next(); riga.next();
+//                    riga.next(); riga.next();
+//                    String Tot_prod_nol = riga.next();
+//                    System.out.println("Tot nol "+Tot_prod_nol);
+//                    data[n_row][2]=Tot_prod_nol;   
+//                }
+//
+//                // Totale Spesa Variabile
+//                if (line.contains(id_3)){
+//                    riga = new Scanner(line);
+//                    riga.next(); riga.next();
+//                    riga.next();
+//                    String Tot_spesa_var = riga.next();
+//                    System.out.println("Tot var "+Tot_spesa_var);
+//                    data[n_row][3]=Tot_spesa_var;   
+//                }                        
+//                line = in.nextLine();               
+//
+//            }
+//
+//
+//            // Totale 
+//            riga = new Scanner(line);
+//            riga.next(); riga.next();
+//            String Tot = riga.next();
+//            System.out.println("Tot "+Tot);
+//            data[n_row][5]=Tot;  
+//
+//            line = in.nextLine();
+//
+//
+//            // dati fattura
+//            data[n_row][9] = bim;
+//            data[n_row][10] = anno;
+//            data[n_row][11] = nFatt;
+//
+//
+//            n_row++;        //contatore linee array                    
+//
+//
+//
+//        }
+    
+    
+
+
+    
+    
+}
+}
+  
+
+
+
+

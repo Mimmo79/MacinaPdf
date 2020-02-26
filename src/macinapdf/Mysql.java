@@ -244,7 +244,6 @@ public class Mysql {
             }
             
             
-            
             query=null;
             rs=null;
             query="INSERT INTO " + Main.dbName + "." + Main.tab_fatture + 
@@ -252,16 +251,25 @@ public class Mysql {
                 " VALUES (      ?,      ?,      ?,      ?,          ?,                              ?,              ?,      ?,                              ?)";         
             pst = con.prepareStatement(query);
             
-            for (riga=1; riga < (Scansionatore.n_row) ; riga++){
+            for (riga=1; riga < (Scansionatore_2019.n_row) ; riga++){ //modificare in linea con la versione attuale di scansionatore
                 pst.setString(1, data[riga][0]);
+                //System.out.println(data[riga][0]+"**");
                 pst.setString(2, data[riga][9]);
+                //System.out.println(data[riga][9]+"**");
                 pst.setString(3, data[riga][10]);
+                //System.out.println(data[riga][10]+"**");
                 pst.setString(4, data[riga][11]);
+                //System.out.println(data[riga][11]+"**");
                 pst.setString(5, data[riga][1]);
+                //System.out.println(data[riga][1]+"**");
                 pst.setString(6, data[riga][2]);
+                //System.out.println(data[riga][2]+"**");
                 pst.setString(7, data[riga][4]);
+                //System.out.println(data[riga][4]+"**");
                 pst.setString(8, data[riga][3]);
-                pst.setString(9, data[riga][5]);           
+                //System.out.println(data[riga][3]+"**");
+                pst.setString(9, data[riga][5]);
+                //System.out.println(data[riga][5]+"**");
      
                 pst.executeUpdate();            
             }
